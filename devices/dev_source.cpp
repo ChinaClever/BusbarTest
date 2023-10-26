@@ -43,11 +43,15 @@ bool Dev_Source::readRk9901()
         if(rkIt.curUnit) curUnit *= 100;
         sObjData *obj = &(mDev->line);
         for(int i=0; i<3; ++i) {
-            obj->vol.value[i] = rkIt.vol / 10;
-            obj->cur.value[i] = rkIt.cur / curUnit;
-            obj->pow[i] = rkIt.pow / 1000;
-            obj->hz[i] = rkIt.hz / 100;
-            obj->pf[i] = rkIt.pf / 10;
+            obj->vol.value[i] = rkIt.vol;
+            obj->cur.value[i] = rkIt.cur/10;
+            obj->pow[i] = rkIt.pow/1000;
+            obj->hz[i] = rkIt.hz;
+            obj->pf[i] = rkIt.pf;
+//            obj->cur.value[i] = rkIt.cur / curUnit;
+//            obj->pow[i] = rkIt.pow / 1000;
+//            obj->hz[i] = rkIt.hz / 100;
+//            obj->pf[i] = rkIt.pf / 10;
         }
         obj->size = 3;
     } else {
@@ -79,8 +83,9 @@ bool Dev_Source::read()
     bool ret = false;
     if(mItem->vref) {
         ret = readRk9901();
-    } else {
-        ret = readSiPdu();
     }
+//    else {
+//        ret = readSiPdu();
+//    }
     return ret;
 }

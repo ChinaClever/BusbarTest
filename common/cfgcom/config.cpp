@@ -56,9 +56,9 @@ void Cfg::setAddr(int addr)
 
 void Cfg::initErrData()
 {
-    item->err.volErr = read("vol", 1,"BusbarErr").toInt();
-    item->err.curErr = read("cur", 1,"BusbarErr").toInt();
-    item->err.powErr = read("pow", 100,"BusbarErr").toInt();
+    item->err.volErr = read("vol", 5,"BusbarErr").toInt();
+    item->err.curErr = read("cur", 5,"BusbarErr").toInt();
+    item->err.powErr = read("pow", 10,"BusbarErr").toInt();
 }
 
 void Cfg::writeErrData()

@@ -156,16 +156,19 @@
          <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
         </property>
         <property name="suffix">
-         <string>V</string>
+         <string>%</string>
         </property>
         <property name="decimals">
          <number>1</number>
         </property>
         <property name="maximum">
-         <double>50000000.000000000000000</double>
+         <double>1.500000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <double>1.000000000000000</double>
+         <double>0.500000000000000</double>
         </property>
        </widget>
       </item>
@@ -200,19 +203,19 @@
          <string/>
         </property>
         <property name="suffix">
-         <string>A</string>
+         <string>%</string>
         </property>
         <property name="decimals">
          <number>1</number>
         </property>
         <property name="maximum">
-         <double>0.200000000000000</double>
+         <double>1.500000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <double>0.100000000000000</double>
+         <double>0.500000000000000</double>
         </property>
        </widget>
       </item>

@@ -49,7 +49,8 @@ bool Test_DevRead::readSn()
 bool Test_DevRead::readDev()
 {
     bool ret = mPacket->delay(5);
-    //if(ret) ret = mSource->read();///////////////////////////
+    if(ret) ret = mSource->read();///////////////////////////
+    else mPro->result = Test_Fail;
     if(ret) {
         if( mItem->modeId == START_BUSBAR ){
             QString str = tr("始端箱串口RTU通讯");
@@ -61,7 +62,7 @@ bool Test_DevRead::readDev()
                     if(ret) break; else if(!mPacket->delay(1)) break;
                 }
                 if(ret) str += tr("成功");
-                else{ str += tr("失败"); mPro->step = Test_Fail;}
+                else{ str += tr("失败"); mPro->result = Test_Fail;}
                 mLogs->updatePro(str, ret);
 
             if(ret) {
@@ -69,7 +70,7 @@ bool Test_DevRead::readDev()
                 if(ret) ret = mIpSnmp->readPduData();
                 str = tr("始端箱SNMP通讯");
                 if(ret) str += tr("成功");
-                else{ str += tr("失败"); mPro->step = Test_Fail;}
+                else{ str += tr("失败"); mPro->result = Test_Fail;}
                 mLogs->updatePro(str, ret);
             }
         }else{
@@ -79,7 +80,7 @@ bool Test_DevRead::readDev()
             }
             QString str = tr("插接箱串口RTU通讯");
             if(ret) str += tr("成功");
-            else{ str += tr("失败"); mPro->step = Test_Fail;}
+            else{ str += tr("失败"); mPro->result = Test_Fail;}
             mLogs->updatePro(str, ret);
         }
     }
@@ -208,7 +209,7 @@ bool Test_DevRead::readNet()
 bool Test_DevRead::readDevData()
 {
     bool ret = true;
-    switch (mDt->devType) {
+    switch (mItem->modeId) {
     case START_BUSBAR:  mRtu = mIpSnmp; break;
     case INSERT_BUSBAR:  mRtu = mSiRtu; break;
     default: ret = false; break;

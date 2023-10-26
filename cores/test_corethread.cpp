@@ -62,8 +62,14 @@ bool Test_CoreThread::volErrRange(int i)
         if(ret) break; else mRead->readDevData();
     }
 
-    QString str = tr("电压 L%1，期望电压=%2V，实测电压=%3V").arg(i+1)
-            .arg(mSour->line.vol.value[i]).arg(mBusData->box[mItem->addr - 1].data.vol.value[i]/(COM_RATE_VOL));
+    int a = mSour->line.vol.value[i];
+    int b = mBusData->box[mItem->addr - 1].data.vol.value[i];
+    float c = -1;
+    if(a != 0)c = ((abs(a-b)*1.0)/a)*100.0;
+    QString str = tr("电压 L%1，期望电压=%2V，实测电压=%3V ，误差=%4 %").arg(i+1)
+            .arg(a/COM_RATE_VOL)
+            .arg(b/(COM_RATE_VOL))
+            .arg(a==0?"---":QString::number(c,'f',3));
     if(ret) str += tr("正常");
     else str += tr("错误");
 
@@ -77,11 +83,18 @@ bool Test_CoreThread::curErrRange(int i)
         ret = mErr->curErr(i);
         if(ret) break; else mRead->readDevData();
     }
-    QString str = tr("电流 L%1，期望电流=%2A，实测电流=%3A").arg(i+1)
-            .arg(mSour->line.cur.value[i]/COM_RATE_CUR).arg(mBusData->box[mItem->addr - 1].data.cur.value[i]/COM_RATE_CUR);
+
+    int a = mSour->line.cur.value[i];
+    int b = mBusData->box[mItem->addr - 1].data.cur.value[i];
+    float c = -1;
+    if(mItem->modeId == START_BUSBAR) a*=15;
+    if(a != 0)c = ((abs(a-b)*1.0)/a)*100.0;
+    QString str = tr("电流 L%1，期望电流=%2A，实测电流=%3A，误差=%4 %").arg(i+1)
+            .arg(a/COM_RATE_CUR).arg(b/COM_RATE_CUR)
+            .arg(a==0?"---":QString::number(c,'f',3));
     if(ret) str += tr("正常");
     else {
-        if(mDev->line.cur.value[i]) {
+        if(mBusData->box[mItem->addr - 1].data.cur.value[i]) {
             str += tr("错误");
         } else {
             str = tr("电流 L%1，错误，请接上负载，实测电流=0A").arg(i+1);
@@ -155,8 +168,14 @@ bool Test_CoreThread::powErrRange(int i)
         if(ret) break; else mRead->readDevData();
     }
 
-    QString str = tr("功率 L%1，期望功率=%2kW，实测功率=%3kW").arg(i+1)
-            .arg(mSour->line.pow[i]/COM_RATE_POW).arg(mDev->line.pow[i]/COM_RATE_POW);
+    int a = mSour->line.pow[i];
+    int b = mBusData->box[mItem->addr - 1].data.pow.value[i];
+    float c = -1;
+    if(mItem->modeId == START_BUSBAR) a*=15;
+    if(a != 0)c = ((abs(a-b)*1.0)/a)*100.0;
+    QString str = tr("功率 L%1，期望功率=%2kW，实测功率=%3kW，误差=%4 %").arg(i+1)
+            .arg(a/COM_RATE_POW).arg(b/COM_RATE_POW)
+            .arg(a==0?"---":QString::number(c,'f',3));
     if(ret) str += tr("正常");
     else str += tr("错误");
 
@@ -193,7 +212,7 @@ bool Test_CoreThread::checkErrRange()
         ret = eleErrRange(i); if(!ret) res = false;
         if(ret){ret = powErrRange(i); if(!ret) res = false;}
     }
-    if(res) res = envErrRange();
+    //if(res) res = envErrRange();
 
     return res;
 }
@@ -405,12 +424,14 @@ void Test_CoreThread::workDown()
     bool ret = false;
     ret = initDev();
     if(ret) {
-        ret = checkErrRange();
+        ret = mRead->readDev();
+        if(ret) ret = checkErrRange();
+        else mPro->result = Test_Fail;
 //        ret = true;
         if(ret) checkBaseInfo();
         if(ret) ret = checkAlarmErr();
         if(ret) ret = factorySet();
-    }
+    }else mPro->result = Test_Fail;
     workResult(ret);
 }
 

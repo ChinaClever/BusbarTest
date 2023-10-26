@@ -19,6 +19,8 @@ Set_WorkWid::Set_WorkWid(QWidget *parent) :
     mItem = Cfg::bulid()->item;
     if(mItem->modeId == START_BUSBAR) mItem->addr = 1;
     else mItem->addr = 2;
+    Cfg::bulid()->initCnt();
+    ui->cntSpin->setValue(mItem->cnt.num);
 }
 
 Set_WorkWid::~Set_WorkWid()

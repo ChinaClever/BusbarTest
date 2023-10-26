@@ -122,7 +122,7 @@ int Dev_IpRtu::recvDataV3(uchar *ptr)
         ptr =  toShort(ptr, line, obj->vol.value);
         ptr =  toShort(ptr, line, obj->cur.value);
         ptr =  getShort(ptr, line, obj->pf);
-        ptr =  toShort(ptr, line, obj->pow);
+        //ptr =  toShort(ptr, line, obj->pow);
         ptr =  toShort(ptr, line, obj->aPow);
         ptr =  toInt(ptr, line, obj->ele);
         mDev->hz = getShort(ptr); ptr +=2;
@@ -151,7 +151,7 @@ int Dev_IpRtu::recvDataV3(uchar *ptr)
         ptr =  toShort(ptr, line, obj->vol.value);
         ptr =  toShort(ptr, line, obj->cur.value);
         ptr =  getShort(ptr, line, obj->pf);
-        ptr =  toShort(ptr, line, obj->pow);
+        //ptr =  toShort(ptr, line, obj->pow);
         ptr =  calcaPow(ptr, line, obj->aPow, obj->vol.value , obj->cur.value);
         ptr =  toInt(ptr, line, obj->ele);
         mDev->hz = getShort(ptr); ptr +=2;
