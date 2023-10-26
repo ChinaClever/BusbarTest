@@ -67,7 +67,7 @@ int Dev_SiRtu::recvDcData(uchar *ptr, int line)
 //    env->size = env->tem.size = env->hum.size = 1;
 
     mDev->br = *(ptr++); // 波特率
-    ptr = toShort(ptr, line, obj->pow);
+    //ptr = toShort(ptr, line, obj->pow);
     ptr = toChar(ptr, line, obj->pf); // 功率因数
     ptr = toChar(ptr, line, obj->sw); // 开关状态
     obj->size = *(ptr++);
@@ -108,7 +108,7 @@ int Dev_SiRtu::recvAcData(uchar *ptr, int line)
 
     obj->size = *(ptr++);
     mDev->br = *(ptr++); // 波特率
-    ptr = toShort(ptr, line, obj->pow);
+    //ptr = toShort(ptr, line, obj->pow);
     ptr = toChar(ptr, line, obj->pf); // 功率因数
     ptr = toChar(ptr, line, obj->sw); // 开关状态
     ptr += 3;

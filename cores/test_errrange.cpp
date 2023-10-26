@@ -27,9 +27,9 @@ bool Test_ErrRange::volErr(int id)
 {
     int pass = Test_Fail;
 
-    int err = mItem->err.volErr;
     int value = mBusData->box[mItem->addr - 1].data.vol.value[id];
     int exValue = mSourceDev->line.vol.value[id];
+    int err = exValue*(mItem->err.volErr/1000.0);
     bool ret = checkErrRange(exValue, value, err);
     if(ret) pass = Test_Pass;
     mBusData->box[mItem->addr - 1].data.vol.status[id] = pass;
@@ -40,9 +40,12 @@ bool Test_ErrRange::volErr(int id)
 bool Test_ErrRange::curErr(int id)
 {
     int pass = Test_Fail;
-    int err = (mItem->err.curErr+1);
+
     int value = mBusData->box[mItem->addr - 1].data.cur.value[id];
     int exValue = mSourceDev->line.cur.value[id];
+    if(mItem->modeId == START_BUSBAR) exValue*=15;
+    int err = exValue*(mItem->err.curErr/1000.0);
+
 
     bool ret = checkErrRange(exValue, value, err);
     if(ret) pass = Test_Pass;
@@ -56,7 +59,8 @@ bool Test_ErrRange::powErr(int id)
     int pass = Test_Fail;
     int value = mBusData->box[mItem->addr - 1].data.pow.value[id];
     int exValue = mSourceDev->line.pow[id];
-    int err = exValue * (mItem->err.powErr+1);
+    if(mItem->modeId == START_BUSBAR) exValue*=15;
+    int err = exValue * (mItem->err.powErr/1000.0);
 
     bool ret = checkErrRange(exValue, value, err);
     if(ret) pass = Test_Pass;

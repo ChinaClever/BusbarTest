@@ -91,6 +91,7 @@ void Home_WorkWid::insertText()
         mPro->status.removeFirst();
         mPro->pass.removeFirst();
     }
+//    if(mId < 14) mPro->step = Test_Fail;
 }
 
 void Home_WorkWid::updateCnt()

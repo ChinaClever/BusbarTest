@@ -70,7 +70,7 @@ void Setup_MainWid::writeLogCount()
 void Setup_MainWid::updateErrData()
 {
     sErrRange *item = &(mItem->err);
-    item->volErr = ui->volErrBox->value();
+    item->volErr = ui->volErrBox->value() * 10;
     item->curErr = ui->curErrBox->value() * 10;
     item->powErr = ui->powErrBox->value() * 10;
 
@@ -80,7 +80,7 @@ void Setup_MainWid::updateErrData()
 void Setup_MainWid::initErrData()
 {
     sErrRange *item = &(mItem->err);
-    ui->volErrBox->setValue(item->volErr);
+    ui->volErrBox->setValue(item->volErr / 10.0);
     ui->curErrBox->setValue(item->curErr / 10.0);
     ui->powErrBox->setValue(item->powErr / 10.0);
 }
