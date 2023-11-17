@@ -98,6 +98,7 @@ void Cfg::initCfgDev()
     item->si.si_iOF = read("si_iOF", 0, g).toInt();
     item->si.si_buzzer = read("si_buzzer", 0, g).toInt();
     item->si.si_filter = read("si_filter", 5, g).toInt();
+    item->si.si_version = read("si_version", 100, g).toInt();
     initSiData(g);
 
     g = "BusbarStartCfg";
@@ -112,6 +113,7 @@ void Cfg::initCfgDev()
     item->ip.ip_shunt = read("ip_shunt", 0 , g).toInt();
     item->ip.ip_residual = read("ip_residual", 0 , g).toInt();
     item->ip.ip_lightning = read("ip_lightning", 0 , g).toInt();
+    item->ip.version = read("ip_version", 200 , g).toInt();
     initIpData(g);
 }
 
@@ -133,6 +135,7 @@ void Cfg::writeCfgDev()
         write("ip_shunt", item->ip.ip_shunt, g);
         write("ip_residual", item->ip.ip_residual, g);
         write("ip_lightning", item->ip.ip_lightning, g);
+        write("ip_version", item->ip.version, g);
         writeIpData(g);
     }else{
         QString g = "BusbarInsertCfg";
@@ -140,6 +143,7 @@ void Cfg::writeCfgDev()
         write("si_buzzer", item->si.si_buzzer, g);
         write("si_filter", item->si.si_filter, g);
         write("si_iOF", item->si.si_iOF, g);
+        write("si_version", item->si.si_version, g);
         writeSiData(g);
     }
 }

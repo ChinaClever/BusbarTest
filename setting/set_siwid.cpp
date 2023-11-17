@@ -35,8 +35,11 @@ void Set_SiWid::initType()
     sSiCfg *dt = &(mItem->si); //设备类型
     ui->baudBox->setCurrentIndex(dt->si_baud);
     ui->buzzerBox->setCurrentIndex(dt->si_buzzer);
-    ui->filterBox->setCurrentIndex(dt->si_filter-2);
+    ui->filterspinBox->setValue(dt->si_filter);
     ui->iOFBox->setCurrentIndex(dt->si_iOF);
+    int ver = dt->si_version;
+    QString str = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
+    ui->verlineEdit->setText(str);
 }
 
 void Set_SiWid::updateType()
@@ -44,9 +47,9 @@ void Set_SiWid::updateType()
     sSiCfg *dt = &(mItem->si);
     dt->si_baud = ui->baudBox->currentIndex();
     dt->si_buzzer = ui->buzzerBox->currentIndex();
-    dt->si_filter = ui->filterBox->currentIndex()+2;
+    dt->si_filter = ui->filterspinBox->value();
     dt->si_iOF = ui->iOFBox->currentIndex();
-
+    dt->si_version = ui->verlineEdit->text().remove(".").toUInt();
 }
 
 bool Set_SiWid::inputCheck()

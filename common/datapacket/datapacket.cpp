@@ -103,6 +103,9 @@ sBusData *sDataPacket::share_mem_get()
 void sDataPacket::share_mem_init()
 {
     sBusData *shared = share_mem_get();//指向shm
+    if(shared) {
+        memset(shared, 0, sizeof(sBusData));
+    }
 }
 
 /**
@@ -119,7 +122,7 @@ void sDataPacket::share_mem_free()
  */
 void sDataPacket::share_mem_del()
 {
-   share_mem_free();
+    share_mem_free();
 }
 
 

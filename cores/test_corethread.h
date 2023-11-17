@@ -47,6 +47,7 @@ protected:
     void workResult(bool);
 
     void checkBaseInfo();
+    bool checkVersion();
 
 private:
     Test_Logs *mLogs;
