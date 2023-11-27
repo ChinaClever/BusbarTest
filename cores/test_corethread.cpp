@@ -212,7 +212,7 @@ bool Test_CoreThread::checkErrRange()
         ret = eleErrRange(i); if(!ret) res = false;
         if(ret){ret = powErrRange(i); if(!ret) res = false;}
     }
-    //if(res) res = envErrRange();
+    if(res) res = envErrRange();
 
     return res;
 }
@@ -418,20 +418,38 @@ void Test_CoreThread::checkBaseInfo()
     else mErr->compareInsertValue();
 }
 
+bool Test_CoreThread::checkVersion()
+{
+    QString str = tr("对比版本信息！");
+    mLogs->updatePro(str);
+    sBoxData* b = &(mPacket->share_mem_get()->box[mItem->addr-1]);
+    bool ret = false;
+    int curValue = b->version;
+    int expect = mItem->modeId == START_BUSBAR?mItem->ip.version:mItem->si.si_version;
+    if(curValue == expect) ret = true;
+    QString curVer = QString::number(curValue/100)+"."+QString::number(curValue/10%10)+"."+QString::number(curValue%10);
+    QString expectVer = QString::number(expect/100)+"."+QString::number(expect/10%10)+"."+QString::number(expect%10);
+    str = tr("版本信息实际值：%1 , 期待值：%2！").arg(curVer).arg(expectVer);
+    mLogs->updatePro(str,ret);
+    return ret;
+}
+
 void Test_CoreThread::workDown()
 {
     mPro->step = Test_Start;
     bool ret = false;
-    ret = initDev();
-    if(ret) {
+    initDev();
+    if(!ret) {
         ret = mRead->readDev();
         if(ret) ret = checkErrRange();
         else mPro->result = Test_Fail;
+        if(ret) ret = checkVersion();
 //        ret = true;
         if(ret) checkBaseInfo();
         if(ret) ret = checkAlarmErr();
         if(ret) ret = factorySet();
-    }else mPro->result = Test_Fail;
+    }
+    if(!ret)mPro->result = Test_Fail;
     workResult(ret);
 }
 
