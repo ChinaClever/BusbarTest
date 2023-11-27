@@ -55,15 +55,15 @@ bool Test_DevRead::readDev()
         if( mItem->modeId == START_BUSBAR ){
             QString str = tr("始端箱串口RTU通讯");
 
-                for(int i=0; i<6; ++i) {
-                    if(mItem->ip.ip_mode == 1){//RTU模式地址为1
+            for(int i=0; i<6; ++i) {
+                if(mItem->ip.ip_mode == 1){//RTU模式地址为1
                     ret = mSiRtu->readPduData();
-                    }else ret = mSiRtu->readRtuData();
-                    if(ret) break; else if(!mPacket->delay(1)) break;
-                }
-                if(ret) str += tr("成功");
-                else{ str += tr("失败"); mPro->result = Test_Fail;}
-                mLogs->updatePro(str, ret);
+                }else ret = mSiRtu->readRtuData();
+                if(ret) break; else if(!mPacket->delay(1)) break;
+            }
+            if(ret) str += tr("成功");
+            else{ str += tr("失败"); mPro->result = Test_Fail;}
+            mLogs->updatePro(str, ret);
 
             if(ret) {
                 ret = checkNet();
@@ -90,12 +90,12 @@ bool Test_DevRead::readDev()
 
 QString Test_DevRead::getConnectModeOid()
 {
-   return mIpSnmp->getConnectModeOid();
+    return mIpSnmp->getConnectModeOid();
 }
 
 bool Test_DevRead::SetInfo(QString o , QString val)
 {
-   return mIpSnmp->SetInfo(o,val);
+    return mIpSnmp->SetInfo(o,val);
 }
 
 bool Test_DevRead::checkNet()
@@ -105,9 +105,9 @@ bool Test_DevRead::checkNet()
     QString str = tr("网络检测");
     for(int k=0; k<3; ++k) {
         if(!ret) {
-             msleep(50);
-             ip = "192.168.1.163";
-             ret = cm_pingNet(ip);
+            msleep(50);
+            ip = "192.168.1.163";
+            ret = cm_pingNet(ip);
         }
         if(ret) break;
     }
