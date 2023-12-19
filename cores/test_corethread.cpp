@@ -395,13 +395,6 @@ bool Test_CoreThread::factorySet()
         str = tr("始端箱通讯模式实际值：%1 , 期待值：%2！").arg(mErr->changeMode(curValue)).arg(mErr->changeMode(expect));
         mLogs->updatePro(str,ret);
     }
-
-//        if(1 != mDev->id) {
-//            ret = mCtrl->factorySet();
-//            str = tr("设备通讯地址");
-//            if(ret) str += tr("成功"); else str += tr("失败");
-//            mLogs->updatePro(str, ret);
-//        }
     return res;
 }
 
