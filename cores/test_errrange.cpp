@@ -192,7 +192,8 @@ bool Test_ErrRange::totalPowAlarm()
 bool Test_ErrRange::zeroLineCurAlarm()
 {
     bool ret = true;
-    sObjCfg *cth = &(mItem->ip_cfg);
+    sObjCfg *cth = mItem->modeId == START_BUSBAR ?(&(mItem->ip_cfg)):(&(mItem->si_cfg));
+//    sObjCfg *cth = &(mItem->ip_cfg);
     sRtuUshortUnit *unit = &(mBusData->box[mItem->addr - 1].zeroLineCur);
     uint min = cth->zerocur.min*cth->zerocur.rate;
     uint max = cth->zerocur.max*cth->zerocur.rate;

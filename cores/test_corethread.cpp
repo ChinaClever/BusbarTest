@@ -294,7 +294,7 @@ bool Test_CoreThread::residualAlarmErr()
 {
     bool res = true;
     QString str = tr("剩余电流最大报警值 ");
-    bool ret = mErr->zeroLineCurAlarm();
+    bool ret = mErr->residualAlarm();
     if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
     mLogs->updatePro(str, ret);
     return res;
@@ -323,10 +323,11 @@ bool Test_CoreThread::checkAlarmErr()
         }
     }
     if(ret) res = envAlarmErr(); if(!ret) res = false;
+    if(ret) res = zeroLineCurAlarmErr(); if(!ret) res = false;//////////////////////////////////
     if(mItem->modeId == START_BUSBAR){
         ret = hzAlarmErr(); if(!ret) res = false;
         ret = totalPowAlarmErr(); if(!ret) res = false;
-        ret = zeroLineCurAlarmErr(); if(!ret) res = false;
+//        ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
         residualAlarmErr(); if(!ret) res = false;
     }
 
