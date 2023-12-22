@@ -76,7 +76,7 @@ struct sObjCfg
 
 struct sIpCfg {
     QString addr;
-    uchar version;
+    ushort version;
     uchar language; //
     uchar lines;
     uchar modbus; //  1 表示 Modbus版本

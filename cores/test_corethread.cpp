@@ -334,11 +334,10 @@ bool Test_CoreThread::checkAlarmErr()
         }
     }
     if(ret) res = envAlarmErr(); if(!ret) res = false;
-    if(ret) res = zeroLineCurAlarmErr(); if(!ret) res = false;//////////////////////////////////
     if(mItem->modeId == START_BUSBAR){
         ret = hzAlarmErr(); if(!ret) res = false;
         ret = totalPowAlarmErr(); if(!ret) res = false;
-        //        ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
+        ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
         residualAlarmErr(); if(!ret) res = false;
     }
 
@@ -449,7 +448,6 @@ void Test_CoreThread::workDown()
         if(ret) ret = checkErrRange();
         else mPro->result = Test_Fail;
         if(ret) ret = checkVersion();
-        //        ret = true;
         if(ret) checkBaseInfo();
         if(ret) ret = checkAlarmErr();
         if(ret) ret = factorySet();
