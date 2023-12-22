@@ -56,6 +56,7 @@ bool Dev_IpSnmp::lineNumV3()
 
 bool Dev_IpSnmp::devDataV3()
 {
+    qDebug() << "before Error initializing v3MP: ";
     bool ret = false;
     QString ipAddr = "192.168.1.163";
     QString roCom = "public";
@@ -212,6 +213,7 @@ bool Dev_IpSnmp::devDataV3()
             pdu.set_vblist(&vb, 1);
         }
     }while(status == SNMP_CLASS_SUCCESS);
+    qDebug() << "after Error initializing v3MP: ";
     Snmp::socket_cleanup();
     if(v3_MP) {
         delete v3_MP;
@@ -444,6 +446,7 @@ bool Dev_IpSnmp::devDataV1()
 bool Dev_IpSnmp::readPduData()
 {
     bool ret = true;
+    qDebug()<<"devDataV3";
     ret = devDataV3();
     return ret;
 }

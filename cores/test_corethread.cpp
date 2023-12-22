@@ -14,6 +14,7 @@ Test_CoreThread::Test_CoreThread(QObject *parent) : Test_Object(parent)
 
 void Test_CoreThread::initFunSlot()
 {
+    mRet = -1;
     mLogs = Test_Logs::bulid(this);
     mErr = Test_ErrRange::bulid(this);
     mRead = Test_DevRead::bulid(this);
@@ -50,7 +51,6 @@ bool Test_CoreThread::initDev()
     mLogs->updatePro(tr("即将开始"));
     bool ret  = false;
     ret = mRead->readDevData();
-
     return ret;
 }
 
@@ -84,7 +84,7 @@ bool Test_CoreThread::curErrRange(int i)
         if(ret) break; else mRead->readDevData();
     }
 
-    int a = mSour->line.cur.value[i];
+    int a = mSour->line.cur.value[i]-2;
     int b = mBusData->box[mItem->addr - 1].data.cur.value[i];
     float c = -1;
     if(mItem->modeId == START_BUSBAR) a*=15;
@@ -207,12 +207,23 @@ bool Test_CoreThread::checkErrRange()
     int i = 0;
     bool res = true, ret = true;
     for(; i<mBusData->box[mItem->addr-1].loopNum; ++i) {
-        ret = volErrRange(i); if(!ret) res = false;
+        //        ret = volErrRange(i); if(!ret) res = false;
         ret = curErrRange(i); if(!ret) res = false;
         ret = eleErrRange(i); if(!ret) res = false;
         if(ret){ret = powErrRange(i); if(!ret) res = false;}
     }
     if(res) res = envErrRange();
+
+    return res;
+}
+
+bool Test_CoreThread::checkVolErrRange()
+{
+    int i = 0;
+    bool res = true, ret = true;
+    for(; i<mBusData->box[mItem->addr-1].loopNum; ++i) {
+        ret = volErrRange(i); if(!ret) res = false;
+    }
 
     return res;
 }
@@ -327,7 +338,7 @@ bool Test_CoreThread::checkAlarmErr()
     if(mItem->modeId == START_BUSBAR){
         ret = hzAlarmErr(); if(!ret) res = false;
         ret = totalPowAlarmErr(); if(!ret) res = false;
-//        ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
+        //        ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
         residualAlarmErr(); if(!ret) res = false;
     }
 
@@ -438,13 +449,24 @@ void Test_CoreThread::workDown()
         if(ret) ret = checkErrRange();
         else mPro->result = Test_Fail;
         if(ret) ret = checkVersion();
-//        ret = true;
+        //        ret = true;
         if(ret) checkBaseInfo();
         if(ret) ret = checkAlarmErr();
         if(ret) ret = factorySet();
+        emit noLoadSig();
+        while(true){
+            sleep(1);
+            if(mRet == 1 || mRet == 2) break;
+        }
+        if(mRet == 1 || mRet == 2) ret = checkVolErrRange();
+        mRet = -1;
     }
     if(!ret)mPro->result = Test_Fail;
     workResult(ret);
+}
+void Test_CoreThread::noloadHomeSlot(int ret)
+{
+    mRet = ret;
 }
 
 void Test_CoreThread::run()

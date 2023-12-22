@@ -112,7 +112,7 @@ struct sSiCfg {
     uchar si_buzzer;
     uchar si_filter;
     uchar si_iOF;
-    uchar si_version;
+    ushort si_version;
 };
 
 struct sCfgDev {

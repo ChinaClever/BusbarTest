@@ -54,9 +54,9 @@ enum  sSetStartType{
     ,StartEle_2   = 51
     ,StartEle_3   = 68
 
-    ,StartEle_1_2   = 106           //电能清零
-    ,StartEle_2_2   = 216
-    ,StartEle_3_2   = 326
+//    ,StartEle_1_2   = 106           //电能清零
+//    ,StartEle_2_2   = 216
+//    ,StartEle_3_2   = 326
 
     ,StartTemperatureMIN_1   = 284           //温度上限
     ,StartTemperatureMAX_1   = 285           //温度下限
@@ -432,7 +432,7 @@ typedef struct _sEnvData {
 typedef struct _sBoxData {
     char offLine; // 离线标识
     uchar loopNum; // 回路数量
-    uchar version;
+    ushort version;
     char protocol;// 协议区分标志位
     uchar curSpecification;// 表示电流规格
     uchar workMode;// 0表示始端箱和插接箱主从模式 1表示始端箱Modbus模式
@@ -444,7 +444,7 @@ typedef struct _sBoxData {
     uchar proNum;//项目编号 0：标准 1：定制
     uchar buzzerStatus;//蜂鸣器
     uchar reState;
-    uchar boxType;//插接箱 ： 0  温控 ：1
+//    uchar boxType;//插接箱 ： 0  温控 ：1
     unsigned long long totalApPow;//   总视在功率
 
     sObjectData data; // 回路数据
