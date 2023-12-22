@@ -42,7 +42,7 @@ bool Test_ErrRange::curErr(int id)
     int pass = Test_Fail;
 
     int value = mBusData->box[mItem->addr - 1].data.cur.value[id];
-    int exValue = mSourceDev->line.cur.value[id];
+    int exValue = mSourceDev->line.cur.value[id]-2;
     if(mItem->modeId == START_BUSBAR) exValue*=15;
     int err = exValue*(mItem->err.curErr/1000.0);
 

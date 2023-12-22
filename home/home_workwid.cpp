@@ -30,6 +30,8 @@ void Home_WorkWid::createWid()
     //    mPrintDlg = new Home_PrintDlg(this);
     //    mManualDlg = new Home_ManualDlg(this);
     mCoreThread = new Test_CoreThread(this);
+    connect(this ,SIGNAL(noloadHomeSig(int)) , mCoreThread, SLOT(noloadHomeSlot(int)));
+    connect(mCoreThread ,SIGNAL(noLoadSig()) , this, SLOT(noLoadSlot()));
 
     mPacket = sDataPacket::bulid();
     mDev = mPacket->getDev();
@@ -223,6 +225,16 @@ bool Home_WorkWid::initSerial()
         //if(!ret){MsgBox::critical(this, tr("请先打 SER 级联口")); return ret;}
     }
     return ret;
+}
+
+void Home_WorkWid::noLoadSlot()
+{
+    bool ret = MsgBox::question(this, tr("确定是否关闭负载，进行电压测试？"));
+    if(ret) {
+        emit noloadHomeSig(1);
+    }else{
+        emit noloadHomeSig(2);
+    }
 }
 
 bool Home_WorkWid::initWid()

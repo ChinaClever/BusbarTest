@@ -36,6 +36,9 @@ protected:
     bool initSerial();
     bool initWid();
 
+signals:
+    void noloadHomeSig(int ret);
+
 private slots:
     void timeoutDone();
     void on_setBtn_clicked();
@@ -43,6 +46,7 @@ private slots:
 //    void on_readBtn_clicked();
 
     void on_printBtn_clicked();
+    void noLoadSlot();
 
 private:
     Ui::Home_WorkWid *ui;

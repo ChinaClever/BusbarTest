@@ -72,7 +72,7 @@ struct Rtu_recv {
     uchar addr; // 表示从机地址码
     uchar fn; // 表示功能码
     ushort len; // 表示数据字节数
-    uchar version;// 表示版本
+    ushort version;// 表示版本
     uchar curSpecification;// 表示电流规格
     uchar workMode;// 0表示始端箱和插接箱主从模式 1表示始端箱Modbus模式
     uchar baudRate;// 表示波特率
@@ -84,7 +84,7 @@ struct Rtu_recv {
     uchar breaker;// 始端箱开关状态
     uchar isd;// ISD状态
     uchar reState;// 剩余电流检测模块选配情况
-    uchar boxType;//插接箱 ： 0  温控 ：1
+//    uchar boxType;//插接箱 ： 0  温控 ：1
 
     RtuRecvLine data[RTU_LOOP_NUM];
     RtuRecvEnv  env[RTU_TH_NUM];

@@ -13,6 +13,12 @@ protected slots:
     void initFunSlot();
     void getMacSlot(QString str);
 
+signals:
+    void noLoadSig();
+
+private slots:
+    void noloadHomeSlot(int ret);
+
 protected:
     void run();    
     void workDown();
@@ -48,6 +54,7 @@ protected:
 
     void checkBaseInfo();
     bool checkVersion();
+    bool checkVolErrRange();
 
 private:
     Test_Logs *mLogs;
@@ -56,6 +63,7 @@ private:
     Test_DevCtrl *mCtrl;
     Test_NetWork *mNetWork;
     QString mMacStr;
+    int mRet;
 };
 
 #endif // TEST_CORETHREAD_H
