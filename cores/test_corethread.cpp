@@ -26,8 +26,10 @@ void Test_CoreThread::initFunSlot()
 
 void Test_CoreThread::getMacSlot(QString str)
 {
-    if( str.size() >= 17 )
+    if( str.size() >= 17 ){
         this->mMacStr = str.right(17);
+        mPro->macAddress = this->mMacStr;
+    }
 }
 
 bool Test_CoreThread::hubPort()
@@ -413,6 +415,24 @@ void Test_CoreThread::workResult(bool)
 {
     mLogs->saveLogs();
     mLogs->updatePro(tr("测试结束"));
+    bool res = false;
+    QString str = tr("最终结果 ");
+    if(mPro->result != Test_Fail) {
+        res = true;
+        str += tr("通过");
+        mPro->uploadPassResult = 1;
+    } else {
+        res = false;
+        str += tr("失败");
+        mPro->uploadPassResult = 0;
+    }
+
+    mPacket->updatePro(str, res);
+    mPro->step = Test_Over;
+
+    sleep(2);
+    Json_Pack::bulid()->http_post("testdata/add","192.168.1.12");//全流程才发送记录(http)
+
     mPro->step = Test_Over;
 }
 

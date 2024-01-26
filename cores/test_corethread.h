@@ -2,7 +2,7 @@
 #define TEST_CORETHREAD_H
 
 #include "test_errrange.h"
-
+#include "json_pack.h"
 class Test_CoreThread : public Test_Object
 {
     Q_OBJECT

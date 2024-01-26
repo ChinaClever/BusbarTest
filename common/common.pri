@@ -20,7 +20,7 @@ include(serialport/serialport.pri)
 include(backcolour/backcolour.pri)
 include(qtsingleapplication/qtsingleapplication.pri)
 include(printer/printer.pri)
-
+include(http/http.pri)
 
 HEADERS += \	
     $$PWD/common.h

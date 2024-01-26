@@ -182,6 +182,7 @@ struct sCfgItem
     uchar macCheck;
     uchar modeId;
     uchar addr;
+    QString sn;//成品序列号
 };
 
 

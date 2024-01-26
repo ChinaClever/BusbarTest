@@ -132,3 +132,9 @@ void Set_WorkWid::initTypeComboBox()
 //{
 //    updateMac();
 //}
+
+void Set_WorkWid::on_userEdit_textChanged(const QString &arg1)
+{
+    ui->userEdit->setClearButtonEnabled(1);
+}
+

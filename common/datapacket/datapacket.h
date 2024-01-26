@@ -39,6 +39,8 @@
 #define RTU_SENT_LEN_V30 0x15E//V3.0.0
 #define SRC_DATA_LEN_MAX 1024 //一包数据最长 —— 用于对接动环
 
+#define TEST1_TEST2 0//0:1楼质检     1:2楼质检
+
 
 enum  sSetStartType{
     StartCurSpecification    = 3
@@ -544,6 +546,28 @@ struct sProgress
 
     uchar result;    // 最终结果
     QTime startTime;
+    QString softwareType;
+    QString companyName;
+    QString protocolVersion;
+
+    QString productType;
+    QString productSN;
+    QString macAddress;
+    QString gnd;
+    QString ir;
+    QString dcw;
+    QString acw;
+    QString pn;
+    // uchar softwareVersion;
+    QString softwareVersion;
+    QString clientName;
+    QString testTime;
+    QString testStartTime;
+    QString testEndTime;
+    QStringList no, itemName;
+    QList<bool> uploadPass;
+    uchar uploadPassResult;
+    QString goods_SN;
 };
 
 

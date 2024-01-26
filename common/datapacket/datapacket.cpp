@@ -33,6 +33,21 @@ void sDataPacket::clear(int id)
     pro->item.clear();
     pro->status.clear();
     pro->startTime = QTime::currentTime();
+
+    pro->productType.clear();
+    pro->productSN.clear();
+    pro->macAddress.clear();
+    pro->clientName.clear();
+    pro->testTime.clear();
+    pro->softwareType = "Busbar-Test";
+    pro->companyName = "clever";
+    pro->protocolVersion = "V1.0";
+    // pro->testStartTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+    pro->testEndTime.clear();
+    pro->no.clear();
+    pro->itemName.clear();
+    pro->uploadPass.clear();
+    pro->softwareVersion.clear();
 }
 
 
@@ -50,6 +65,10 @@ void sDataPacket::init()
     pro->step = Test_Fun;
     pro->result = Test_Info;
     pro->startTime = QTime::currentTime();
+    pro->softwareType = "Busbar-Test";
+    pro->companyName = "clever";
+    pro->protocolVersion = "V1.0";
+    pro->testStartTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
 }
 
 bool sDataPacket::updatePro(const QString &str, bool pass, int sec)

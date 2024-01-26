@@ -3,6 +3,7 @@
 
 #include "dev_iprtu.h"
 #include "rk_serial.h"
+#include "ad_modbus.h"
 
 class Dev_Source : public Dev_SiRtu
 {
@@ -22,6 +23,7 @@ protected slots:
 
 private:
     Rk_Serial *mRk;
+
 };
 
 #endif // DEV_SOURCETHREAD_H
