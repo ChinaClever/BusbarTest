@@ -59,6 +59,12 @@ int Sn_DevType::getDevType(const QString &str)
           else mDt->version = IP_PDUV1;
         }
     }
+    if(str.contains("IDC-BUSBAR")) {
+        ret = IDC_BUSBAR;
+        if(str.contains("插接箱")) ret = INSERT_BUSBAR;
+        else if(str.contains("温度传感器"))ret = TEMPER_BUSBAR;
+        else if(str.contains("始端箱"))ret = START_BUSBAR;
+    }
 
     return ret;
 }

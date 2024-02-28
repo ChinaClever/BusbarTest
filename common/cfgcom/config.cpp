@@ -115,6 +115,19 @@ void Cfg::initCfgDev()
     item->ip.ip_lightning = read("ip_lightning", 0 , g).toInt();
     item->ip.version = read("ip_version", 200 , g).toInt();
     initIpData(g);
+
+    g = "BusbarEnvCfg";
+    item->si.tem_buzzer = read("tem_buzzer", 0 , g).toInt();
+    item->si.tem_filter = read("tem_filter", 5 , g).toInt();
+    item->si.tem_version = read("tem_version", 100 , g).toInt();
+    item->si.temMin[0] = read("temMin_1", 0 , g).toDouble();
+    item->si.temMin[1] = read("temMin_2", 0 , g).toDouble();
+    item->si.temMin[2] = read("temMin_3", 0 , g).toDouble();
+    item->si.temMin[3] = read("temMin_4", 0 , g).toDouble();
+    item->si.temMax[0] = read("temMax_1", 0 , g).toDouble();
+    item->si.temMax[1] = read("temMax_2", 0 , g).toDouble();
+    item->si.temMax[2] = read("temMax_3", 0 , g).toDouble();
+    item->si.temMax[3] = read("temMax_4", 0 , g).toDouble();
 }
 
 void Cfg::writeCfgDev()
@@ -137,7 +150,7 @@ void Cfg::writeCfgDev()
         write("ip_lightning", item->ip.ip_lightning, g);
         write("ip_version", item->ip.version, g);
         writeIpData(g);
-    }else{
+    }else if(item->modeId == INSERT_BUSBAR){
         QString g = "BusbarInsertCfg";
         write("si_baud", item->si.si_baud, g);
         write("si_buzzer", item->si.si_buzzer, g);
@@ -145,6 +158,20 @@ void Cfg::writeCfgDev()
         write("si_iOF", item->si.si_iOF, g);
         write("si_version", item->si.si_version, g);
         writeSiData(g);
+    }else if(item->modeId == TEMPER_BUSBAR){
+        QString g = "BusbarEnvCfg";
+        //温度阈值
+        write("tem_buzzer", item->si.tem_buzzer, g);
+        write("tem_filter", item->si.tem_filter, g);
+        write("tem_version", item->si.tem_version, g);
+        write("temMin_1", item->si.temMin[0], g);
+        write("temMin_2", item->si.temMin[1], g);
+        write("temMin_3", item->si.temMin[2], g);
+        write("temMin_4", item->si.temMin[3], g);
+        write("temMax_1", item->si.temMax[0], g);
+        write("temMax_2", item->si.temMax[1], g);
+        write("temMax_3", item->si.temMax[2], g);
+        write("temMax_4", item->si.temMax[3], g);
     }
 }
 

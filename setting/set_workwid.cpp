@@ -95,6 +95,10 @@ void Set_WorkWid::on_typeComboBox_currentIndexChanged(int index)
         mItem->addr = 2;
         break;
     }
+    case TEMPER_BUSBAR:{
+        mItem->addr = 2;
+        break;
+    }
     }
 }
 

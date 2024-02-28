@@ -19,6 +19,7 @@ public:
     bool volAlarm(int id);
     bool curAlarm(int id);
     bool temAlarm(int id);
+    bool temEnvAlarm(int id);
     bool powAlarm(int id);
 
     bool lineVolAlarm(int id);
@@ -30,10 +31,12 @@ public:
     void compareInsertValue();
     void compareStartValue();
     QString changeMode(int index);
+    void compareEnvInfo();
 
 protected:
     bool checkErrRange(int exValue, int value, int err);
     void compareInsertInfo();
+
     void compareStartInfo();
     void compareStartMac();
     QString changeBaudType(int index);

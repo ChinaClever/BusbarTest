@@ -54,6 +54,7 @@ protected:
 
     void checkBaseInfo();
     bool checkVersion();
+    bool checkEnvVersion();
     bool checkVolErrRange();
 
 private:

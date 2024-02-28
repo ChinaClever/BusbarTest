@@ -13,6 +13,8 @@ enum eDevTypes {
     IP_PDU,
     BM_PDU,
 
+    IDC_BUSBAR,
+
     AC = 1, // 交流
     DC,     // 直流
 
@@ -36,6 +38,7 @@ enum eIpTypes {
 
     START_BUSBAR=0,
     INSERT_BUSBAR,
+    TEMPER_BUSBAR,
     SNMP=0,
     MODBUS
 };
@@ -113,6 +116,13 @@ struct sSiCfg {
     uchar si_filter;
     uchar si_iOF;
     ushort si_version;
+
+    //四个温度
+    double temMax[4];
+    double temMin[4];
+    ushort tem_version;
+    uchar tem_buzzer;
+    uchar tem_filter;
 };
 
 struct sCfgDev {
@@ -143,7 +153,7 @@ struct sCount
 struct sErrRange
 {
     ushort volErr;
-    ushort curErr;
+    uint curErr;
     ushort powErr;
 };
 
@@ -163,7 +173,6 @@ struct sCfgItem
     sObjCfg ip_cfg;
     sIpCfg ip;
     sSiCfg si;
-
     sCount cnt;
     int logCount;
 

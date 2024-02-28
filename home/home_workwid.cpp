@@ -185,12 +185,10 @@ void Home_WorkWid::updateWid()
 
     str = mDev->devType.dev_type;
     mPro->productType = str;
-
+    ui->devLab->setText(str);
     // str = mItem->modeId == START_BUSBAR?tr("始端箱"):tr("插接箱");
     int ver = get_share_mem()->box[mItem->addr-1].version;
     if(ver != 0)str += "  版本："+QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
-    ui->devLab->setText(str);
-    mPro->productType = str;
     ui->userLab->setText(mItem->user);
     mPro->clientName = mItem->user;
     mPro->goods_SN = mItem->sn;

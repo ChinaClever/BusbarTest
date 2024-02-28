@@ -263,9 +263,11 @@ bool Test_CoreThread::powAlarmErr(int i)
 bool Test_CoreThread::envAlarmErr()
 {
     bool res = true;
+    bool ret = false;
     for(int i = 0 ; i < 4 ; i++){
         QString str = tr("温度%1报警阈值 ").arg(i+1);
-        bool ret = mErr->temAlarm(i);
+        if(mItem->modeId == TEMPER_BUSBAR) ret = mErr->temEnvAlarm(i);
+        else  ret = mErr->temAlarm(i);
         if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
         mLogs->updatePro(str, ret);
     }
@@ -457,27 +459,48 @@ bool Test_CoreThread::checkVersion()
     mLogs->updatePro(str,ret);
     return ret;
 }
-
+bool Test_CoreThread::checkEnvVersion()
+{
+    QString str = tr("对比温度传感器版本信息！");
+    mLogs->updatePro(str);
+    sBoxData* b = &(mPacket->share_mem_get()->box[mItem->addr-1]);
+    bool ret = false;
+    int curValue = b->version;
+    int expect = mItem->si.tem_version;
+    if(curValue == expect) ret = true;
+    QString curVer = QString::number(curValue/100)+"."+QString::number(curValue/10%10)+"."+QString::number(curValue%10);
+    QString expectVer = QString::number(expect/100)+"."+QString::number(expect/10%10)+"."+QString::number(expect%10);
+    str = tr("版本信息实际值：%1 , 期待值：%2！").arg(curVer).arg(expectVer);
+              mLogs->updatePro(str,ret);
+    return ret;
+}
 void Test_CoreThread::workDown()
 {
     mPro->step = Test_Start;
     bool ret = false;
     initDev();
     if(!ret) {
-        ret = mRead->readDev();
-        if(ret) ret = checkErrRange();
-        else mPro->result = Test_Fail;
-        if(ret) ret = checkVersion();
-        if(ret) checkBaseInfo();
-        if(ret) ret = checkAlarmErr();
-        if(ret) ret = factorySet();
-        emit noLoadSig();
-        while(true){
-            sleep(1);
-            if(mRet == 1 || mRet == 2) break;
+        if(mItem->modeId == TEMPER_BUSBAR){
+            if(ret) ret = envErrRange();//判断设备当前温度值是否有效
+            if(ret) ret = checkEnvVersion();//对比版本
+            mErr->compareEnvInfo();//对比基本信息--蜂鸣器、告警滤波次数
+            if(ret) ret = envAlarmErr(); if(!ret) ret = false;//对比阈值
+        }else{
+            ret = mRead->readDev();
+            if(ret) ret = checkErrRange();
+            else mPro->result = Test_Fail;
+            if(ret) ret = checkVersion();
+            if(ret) checkBaseInfo();
+            if(ret) ret = checkAlarmErr();//检查报警阈值
+            if(ret) ret = factorySet();
+            emit noLoadSig();
+            while(true){
+                sleep(1);
+                if(mRet == 1 || mRet == 2) break;
+            }
+            if(mRet == 1 || mRet == 2) ret = checkVolErrRange();
+            mRet = -1;
         }
-        if(mRet == 1 || mRet == 2) ret = checkVolErrRange();
-        mRet = -1;
     }
     if(!ret)mPro->result = Test_Fail;
     workResult(ret);
