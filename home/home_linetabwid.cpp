@@ -34,7 +34,7 @@ void Home_LineTabWid::appendItem(sObjectData *dev)
         else{
             if(2 == dev->sw[i]) listStr << tr("开"); else if(1 == dev->sw[i])  listStr << tr("关");
         }
-        listStr << QString::number(dev->cur.value[i]/COM_RATE_CUR,'f',2)+"A";
+        listStr << QString::number(dev->cur.value[i]/COM_RATE_CUR,'f',3)+"A";
         listStr << QString::number(dev->vol.value[i]/COM_RATE_VOL,'f',1)+"V";
 
         listStr << QString::number(dev->pow.value[i]/COM_RATE_POW,'f',3)+"kW";

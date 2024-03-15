@@ -142,7 +142,11 @@ bool Test_ErrRange::temEnvAlarm(int id)
     sSiCfg *cth = &(mItem->si);
     sDataValue *unit = &(mBusData->box[mItem->addr - 1].env.tem);
 
+    QString str = tr("温度传感器%1最小阈值：实际值 %2℃，期望值 %3℃").arg(id+1).arg(unit->min[id]).arg(cth->temMin[id]);
+    mLogs->updatePro(str);
     if(unit->min[id] != cth->temMin[id]) ret = false;
+    str = tr("温度传感器%1最大阈值：实际值 %2℃，期望值 %3℃").arg(id+1).arg(unit->max[id]).arg(cth->temMax[id]);
+    mLogs->updatePro(str);
     if(unit->max[id] != cth->temMax[id]) ret = false;
 
     return ret;
@@ -286,6 +290,7 @@ QString Test_ErrRange::changeCurType(int index)
     case 1:str = tr("250 A");break;
     case 2:str = tr("400 A");break;
     case 3:str = tr("650 A");break;
+    case 4:str = tr("800 A");break;
     default:str = tr("标准");break;
     }
     return str;

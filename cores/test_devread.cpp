@@ -33,14 +33,7 @@ Test_DevRead *Test_DevRead::bulid(QObject *parent)
 bool Test_DevRead::readSn()
 {
     bool ret = true;
-    if(mItem->si.led){
-        mDt->ac = mItem->si.ac;
-        mDt->devType = SI_PDU;
-        mDt->lines = mItem->si.lines;
-        mDt->dev_type = tr("SI/BM数码管");
-    } else {
-        ret = mSn->snEnter();
-    }
+    ret = mSn->snEnter();
 
     if(ret) ret = readDevData();
     return ret;
@@ -212,6 +205,7 @@ bool Test_DevRead::readDevData()
     switch (mItem->modeId) {
     case START_BUSBAR:  mRtu = mIpSnmp; break;
     case INSERT_BUSBAR:  mRtu = mSiRtu; break;
+    case TEMPER_BUSBAR:  mRtu = mSiRtu; break;
     default: ret = false; break;
     }
     ret = mRtu->readPduData();

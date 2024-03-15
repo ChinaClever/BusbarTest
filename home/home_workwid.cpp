@@ -99,15 +99,17 @@ void Home_WorkWid::insertText()
 }
 void Home_WorkWid::insertTextslots(QString str , bool ret)
 {
-    if(mPro->status.size()) {
-        setTextColor();
-        QString str = QString::number(mId++) + "、"+ mPro->status.first() + "\n";
-        ui->textEdit->insertPlainText(str);
-        mPro->status.removeFirst();
-        mPro->pass.removeFirst();
+        // setTextColor();
+        // QString str = QString::number(mId++) + "、"+ mPro->status.first() + "\n";
+        // ui->textEdit->insertPlainText(str);
+        // mPro->status.removeFirst();
+        // mPro->pass.removeFirst();
+
+        mPro->pass << ret;
+        mPro->status << str;
+
         mPro->itemName<< str;
         mPro->uploadPass<< ret;
-    }
     //    if(mId < 14) mPro->step = Test_Fail;
 }
 void Home_WorkWid::updateCnt()
@@ -216,11 +218,11 @@ void Home_WorkWid::on_setBtn_clicked()
 void Home_WorkWid::timeoutDone()
 {
     ui->addrSpin->setValue(mItem->addr);
-    if(mPro->step) {
+    // if(mPro->step) {
         insertText();
         updateWid();
         updateCnt();
-    }
+    // }
 }
 
 bool Home_WorkWid::initSerial()
@@ -236,13 +238,17 @@ bool Home_WorkWid::initSerial()
 
     bool ret = false;
     mItem->sn = ui->snEdit->text();
-    ret = coms->ser2->isOpened();
-    if(!ret){MsgBox::critical(this, tr("请先打 LINK 级联串")); return ret;}
-    if(mPro->step < Test_End) {
-        ret = coms->source->isOpened();
-        if(!ret){MsgBox::critical(this, tr("请先打开 SI-PDU 参考源串口")); return ret;}
+    if(mItem->modeId == TEMPER_BUSBAR){
+        ret = true;
+    }else{
+            ret = coms->ser2->isOpened();
+            if(!ret){MsgBox::critical(this, tr("请先打 LINK 级联串")); return ret;}
+            if(mPro->step < Test_End) {
+                ret = coms->source->isOpened();
+                if(!ret){MsgBox::critical(this, tr("请先打开 SI-PDU 参考源串口")); return ret;}
         //ret = coms->ser1->isOpened();
         //if(!ret){MsgBox::critical(this, tr("请先打 SER 级联口")); return ret;}
+            }
     }
     return ret;
 }
@@ -321,12 +327,11 @@ bool Home_WorkWid::initWid()
 void Home_WorkWid::on_startBtn_clicked()
 {
     if(mPro->step == Test_End) {
-        if(!ui->snEdit->text().isEmpty())
-        {
+        // if(!ui->snEdit->text().isEmpty()){
             if(initWid()) mCoreThread->start();
-        }else{
-            MsgBox::critical(this, tr("请先填写成品序列号！"));
-        }
+        // }else{
+        //     MsgBox::critical(this, tr("请先填写成品序列号！"));
+        // }
     } else {
         bool ret = MsgBox::question(this, tr("确定需要提前结束？"));
         if(ret) {

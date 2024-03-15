@@ -31,17 +31,20 @@ public:
     explicit Rtu_Read(QObject *parent = nullptr);
 
     int read(sRtuItem &pkt, uchar *recv);
+    int readSn(sRtuItem &pkt, uchar *recv);
     int read(uchar *recv);
 
 protected:
     ushort calccrc (ushort crc, uchar crcbuf);
     int rtuPacket(sRtuItem *pkt, uchar *ptr);
     int rtuRecvData(uchar *ptr,  sRtuReplyItem *pkt);
+    int rtuRecvSn(uchar *ptr, sRtuReplyItem *pkt);
 
     bool rtuRecvCrc(uchar *buf, int len);
     bool recvCrc(uchar *buf, int len, sRtuReplyItem *msg);
 
     int rtuRead(sRtuItem *pkt, sRtuReplyItem *recv);
+    int rtuReadSn(sRtuItem *pkt, sRtuReplyItem *recv);
 };
 
 #endif // RTU_READ_H

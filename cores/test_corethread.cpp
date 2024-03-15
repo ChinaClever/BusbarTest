@@ -52,7 +52,8 @@ bool Test_CoreThread::initDev()
 {
     mLogs->updatePro(tr("即将开始"));
     bool ret  = false;
-    ret = mRead->readDevData();
+    if(mItem->modeId == START_BUSBAR)ret = true;
+    else ret = mRead->readSn();
     return ret;
 }
 
@@ -189,13 +190,13 @@ bool Test_CoreThread::envErrRange()
     bool ret = true;
     for(int i = 0 ; i < 4 ; i++){
         ret = mErr->temErr(i);
-        QString str = tr("传感器温度%1，温度%1=%2").arg(i+1).arg(mBusData->box[mItem->addr - 1].env.tem.value[0]);
+        QString str = tr("传感器温度%1，实测温度= %2℃，").arg(i+1).arg(mBusData->box[mItem->addr - 1].env.tem.value[0]);
         if(ret) str += tr("正常");
         else {
             if(mBusData->box[mItem->addr - 1].env.tem.value[0]) {
                 str += tr("错误");
             } else {
-                str = tr("请插入传感器，实测温度=0");
+                str = tr("请插入传感器，实测温度 = 0");
             }
         }
 
@@ -265,7 +266,7 @@ bool Test_CoreThread::envAlarmErr()
     bool res = true;
     bool ret = false;
     for(int i = 0 ; i < 4 ; i++){
-        QString str = tr("温度%1报警阈值 ").arg(i+1);
+        QString str = tr("温度传感器%1报警阈值 ").arg(i+1);
         if(mItem->modeId == TEMPER_BUSBAR) ret = mErr->temEnvAlarm(i);
         else  ret = mErr->temAlarm(i);
         if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
@@ -417,6 +418,9 @@ void Test_CoreThread::workResult(bool)
 {
     mLogs->saveLogs();
     mLogs->updatePro(tr("测试结束"));
+    // sleep(2);
+    // Json_Pack::bulid()->http_post("testdata/add","192.168.1.12");//全流程才发送记录(http)
+
     bool res = false;
     QString str = tr("最终结果 ");
     if(mPro->result != Test_Fail) {
@@ -430,11 +434,6 @@ void Test_CoreThread::workResult(bool)
     }
 
     mPacket->updatePro(str, res);
-    mPro->step = Test_Over;
-
-    sleep(2);
-    Json_Pack::bulid()->http_post("testdata/add","192.168.1.12");//全流程才发送记录(http)
-
     mPro->step = Test_Over;
 }
 
@@ -478,8 +477,8 @@ void Test_CoreThread::workDown()
 {
     mPro->step = Test_Start;
     bool ret = false;
-    initDev();
-    if(!ret) {
+    ret = initDev();
+    if(ret) {
         if(mItem->modeId == TEMPER_BUSBAR){
             if(ret) ret = envErrRange();//判断设备当前温度值是否有效
             if(ret) ret = checkEnvVersion();//对比版本

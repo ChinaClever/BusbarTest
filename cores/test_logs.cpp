@@ -23,7 +23,7 @@ bool Test_Logs::appendLogItem(const QString &str, bool pass)
 {
     sStateItem it;
 
-    it.dev = mDev->devType.dev_type.split("_").first();
+    it.dev = mDev->devType.dev_type;
     it.user = mItem->user;
     it.sn = mDev->devType.sn;
     if(pass) {
@@ -53,7 +53,7 @@ bool Test_Logs::writeLog()
     Db_Tran db;
     sLogItem it;
 
-    it.dev = mItem->modeId == START_BUSBAR?tr("始端箱"):tr("插接箱");
+    it.dev = mDev->devType.dev_type;
     it.op = user_land_name();
     it.user = mItem->user;
     it.sn = mDev->devType.sn;

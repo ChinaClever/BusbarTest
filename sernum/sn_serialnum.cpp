@@ -87,13 +87,13 @@ bool Sn_SerialNum::readSn(sSnItem &itSn)
 {
     sRtuItem itRtu;
     bool ret = false;
-    uchar buf[32] = {0};
+    static uchar buf[256] = {0};
     QString str = tr("序列号读取成功");
 
-    mPacket->delay(2);
+    // mPacket->delay(2);
     initReadCmd(itRtu);
-    int len = mModbus->read(itRtu, buf);
-    if(8 != len) len = mModbus->read(itRtu, buf);
+    int len = mModbus->readSn(itRtu, buf);
+    if(8 != len) len = mModbus->readSn(itRtu, buf);
     if(len == 8) {
         ret = analySn(buf, len, itSn); toSnStr(itSn);
         if(!ret) str = tr("序列号分析错误：%1").arg(itSn.sn);
