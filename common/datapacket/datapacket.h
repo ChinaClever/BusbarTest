@@ -37,6 +37,7 @@
 #define RTU_SENT_LEN_V23 0x135//V2.3 and V2.4
 #define RTU_SENT_LEN_V25 0x280//V2.5
 #define RTU_SENT_LEN_V30 0x15E//V3.0.0
+#define RTU_SENT_LEN_V303 0x1DB//V3.0.3
 #define SRC_DATA_LEN_MAX 1024 //一包数据最长 —— 用于对接动环
 
 #define ZHIJIANGINSERTBOXZERO 0 //之江零线电流定制 1:启用 0:不启用
@@ -52,9 +53,12 @@ enum  sSetStartType{
     ,SetStartBreaker         = 9           //0:没有 1:正常 2:损坏
     ,SetStartLps             = 10           //0:没有 1:正常 2:损坏
 
-    ,StartEle_1   = 34           //电能清零
-    ,StartEle_2   = 51
-    ,StartEle_3   = 68
+//    ,StartEle_1   = 34           //电能清零
+//    ,StartEle_2   = 51
+//    ,StartEle_3   = 68
+    ,StartEle_3031   = 106           //电能清零
+    ,StartEle_3032   = 216
+    ,StartEle_3033   = 326
 
 //    ,StartEle_1_2   = 106           //电能清零
 //    ,StartEle_2_2   = 216

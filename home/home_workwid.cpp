@@ -32,6 +32,7 @@ void Home_WorkWid::createWid()
     mCoreThread = new Test_CoreThread(this);
     connect(this ,SIGNAL(noloadHomeSig(int)) , mCoreThread, SLOT(noloadHomeSlot(int)));
     connect(mCoreThread ,SIGNAL(noLoadSig()) , this, SLOT(noLoadSlot()));
+    connect(this , SIGNAL(clearStartEleSig()), mCoreThread, SLOT(clearStartEleSlot()));
 
     mPacket = sDataPacket::bulid();
     mDev = mPacket->getDev();
@@ -65,7 +66,6 @@ void Home_WorkWid::initLayout()
     gridLayout->setContentsMargins(0, 7, 0, 0);
     gridLayout->addWidget(this);
 
-    ui->printBtn->hide();
     ui->guideCheck->hide();
     ui->temCheck->hide();
 }
@@ -322,7 +322,7 @@ void Home_WorkWid::on_startBtn_clicked()
 //    }
 //}
 
-void Home_WorkWid::on_printBtn_clicked()
+void Home_WorkWid::on_clearEleBtn_clicked()
 {
-    mPrintDlg->exec();
+    emit clearStartEleSig();
 }

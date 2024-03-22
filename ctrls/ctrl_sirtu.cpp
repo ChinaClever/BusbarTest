@@ -166,7 +166,7 @@ bool Ctrl_SiRtu::rtu_sent_uintV3_buff(uchar addr, ushort reg, uint num,  uint va
 bool Ctrl_SiRtu::setBusbarStartEle(int index)//清始端箱电能
 {
     bool ret = true;
-    ret = sentRtuCmd(StartEle_1+(index-1)*17, 1);
+    ret = sentRtuCmd(StartEle_3031+(index-1)*110, 1);
 
     return ret;
 }

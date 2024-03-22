@@ -28,7 +28,7 @@ void Dev_SiRtu::initRtuItem(Rtu_Sent &it)
     it.addr = mItem->addr;
     it.fn = 0x03;
     it.reg = 0;
-    it.len = RTU_SENT_LEN_V30;
+    it.len = mItem->addr==1?RTU_SENT_LEN_V303:RTU_SENT_LEN_V30;
 }
 
 
@@ -569,11 +569,11 @@ int Dev_SiRtu::rtu_plug_recv_zero_data(uchar *ptr, Rtu_recv *msg)
 bool Dev_SiRtu::rtu_recv_packetV3(uchar *buf, int len, Rtu_recv *pkt)
 {
     bool ret = false;
-    int rtn = rtu_recv_len(buf, len , RTU_SENT_LEN_V30*2+6);  //判断回收的数据是否完全
+    int rtn = rtu_recv_len(buf, len , (pkt->addr == 0X01 ?RTU_SENT_LEN_V303:RTU_SENT_LEN_V30)*2+6);  //判断回收的数据是否完全
     if(rtn == 0) {
         uchar *ptr=buf;
         ptr += rtu_recv_head(ptr, pkt); //指针偏移0
-        if( pkt->addr == 0x01 ){//始端箱
+        if( pkt->addr == 0x01 ){//始端箱??
             ptr += rtu_start_recv_init(ptr , pkt);
             ptr += 5*2;//保留
             for(int i = 0 ; i < RTU_LINE_NUM ; ++i) // 读取相 数据
@@ -609,7 +609,7 @@ bool Dev_SiRtu::rtu_recv_packetV3(uchar *buf, int len, Rtu_recv *pkt)
 #endif
 
         }
-        pkt->crc = (buf[RTU_SENT_LEN_V30*2+6-1]*256) + buf[RTU_SENT_LEN_V30*2+6-2]; // RTU_SENT_LEN_V23*2+5
+        pkt->crc = (buf[(pkt->addr == 0X01 ?RTU_SENT_LEN_V303:RTU_SENT_LEN_V30)*2+6-1]*256) + buf[(pkt->addr == 0X01 ?RTU_SENT_LEN_V303:RTU_SENT_LEN_V30)*2+6-2]; // RTU_SENT_LEN_V23*2+5
         ret = rtu_recv_crc(buf, len, pkt); //校验码
     }
     return ret;
