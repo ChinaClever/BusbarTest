@@ -2,6 +2,7 @@
 #define CONFIGBASH
 #include "cfgcom.h"
 #include "serialstatuswid.h"
+#include "datapacket.h"
 
 enum eDevTypes {
     PDU=0,

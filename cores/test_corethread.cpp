@@ -339,10 +339,15 @@ bool Test_CoreThread::checkAlarmErr()
         }
     }
     if(ret) res = envAlarmErr(); if(!ret) res = false;
+#if ZHIJIANGINSERTBOXZERO==1
+    if(ret) res = zeroLineCurAlarmErr(); if(!ret) res = false;//////////////////////////////////
+#endif
     if(mItem->modeId == START_BUSBAR){
         ret = hzAlarmErr(); if(!ret) res = false;
         ret = totalPowAlarmErr(); if(!ret) res = false;
+        #if ZHIJIANGINSERTBOXZERO==0
         ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
+        #endif
         residualAlarmErr(); if(!ret) res = false;
     }
 

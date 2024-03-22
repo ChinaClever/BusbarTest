@@ -199,7 +199,9 @@ void Cfg::initSiData(const QString &g)
     initUnit("tem", ptr->tem, g);
     initUnit("pow", ptr->pow, g);
 
-    //initUnit("zerocur", ptr->zerocur, g);
+#if ZHIJIANGINSERTBOXZERO==1
+    initUnit("zerocur", ptr->zerocur, g);
+#endif
 }
 
 
@@ -228,7 +230,9 @@ void Cfg::writeSiData(const QString &g)
     writeUnit("tem", ptr->tem , g);
     writeUnit("pow", ptr->pow , g);
 
-    //writeUnit("zerocur", ptr->zerocur , g);
+#if ZHIJIANGINSERTBOXZERO==1
+    writeUnit("zerocur", ptr->zerocur , g);
+#endif
 }
 
 void Cfg::writeUnit(const QString& prefix, sUnitCfg &unit,const QString &g, int f)

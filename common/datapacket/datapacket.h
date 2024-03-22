@@ -39,7 +39,9 @@
 #define RTU_SENT_LEN_V30 0x15E//V3.0.0
 #define SRC_DATA_LEN_MAX 1024 //一包数据最长 —— 用于对接动环
 
+
 #define TEST1_TEST2 0//0:1楼质检     1:2楼质检
+#define ZHIJIANGINSERTBOXZERO 0 //之江零线电流定制 1:启用 0:不启用
 
 
 enum  sSetStartType{
