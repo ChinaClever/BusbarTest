@@ -696,7 +696,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QPushButton" name="printBtn">
+       <widget class="QPushButton" name="clearEleBtn">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -712,11 +712,11 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>14</pointsize>
+          <pointsize>10</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>打印</string>
+         <string>清始端箱电能</string>
         </property>
        </widget>
       </item>

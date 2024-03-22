@@ -19,6 +19,9 @@ signals:
 private slots:
     void noloadHomeSlot(int ret);
 
+public slots:
+    void clearStartEleSlot();
+
 protected:
     void run();    
     void workDown();

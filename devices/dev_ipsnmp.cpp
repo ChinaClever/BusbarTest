@@ -64,7 +64,7 @@ bool Dev_IpSnmp::devDataV3()
     QString v3AuthPass = "authkey123";
     QString name = "Busbar";
     int num = 1;
-    int readVersion = version3;
+    int readVersion = version2c;
 
     Snmp::socket_startup();
     char ipaddr[255];
@@ -634,7 +634,7 @@ bool Dev_IpSnmp::SetInfo(QString o , QString val)
     QString v3AuthPass = "authkey123";
     QString name = "IDC-BUSBAR";
 
-    int setVersion = version3;
+    int setVersion = version2c;
     Snmp::socket_startup();  // Initialize socket subsystem
     //---------[ make a GenAddress and Oid object to retrieve ]---------------
     UdpAddress address(ipAddr.toStdString().c_str());      // make a SNMP++ Generic address

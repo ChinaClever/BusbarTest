@@ -20,6 +20,7 @@ public:
 
 signals:
     void startSig();
+    void clearStartEleSig();
 
 protected:
     void createWid();
@@ -44,9 +45,12 @@ private slots:
     void on_setBtn_clicked();
     void on_startBtn_clicked();
 //    void on_readBtn_clicked();
+
     void insertTextslots(QString str,bool res);
     void on_printBtn_clicked();
+
     void noLoadSlot();
+    void on_clearEleBtn_clicked();
 
     void on_snEdit_textChanged(const QString &arg1);
 

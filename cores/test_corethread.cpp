@@ -419,6 +419,12 @@ bool Test_CoreThread::factorySet()
     return res;
 }
 
+void Test_CoreThread::clearStartEleSlot()
+{
+    mCtrl->eleClean();
+    return;
+}
+
 void Test_CoreThread::workResult(bool)
 {
     mLogs->saveLogs();
