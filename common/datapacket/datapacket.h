@@ -3,7 +3,7 @@
 #include <QtCore>
 #include <QColor>
 
-#define LINE_NUM  3
+#define LINE_NUM  9
 #define SENOR_NUM 1
 #define NAME_SIZE 32
 #define DEV_NUM 3

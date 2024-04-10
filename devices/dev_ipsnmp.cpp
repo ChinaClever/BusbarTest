@@ -632,7 +632,7 @@ bool Dev_IpSnmp::SetInfo(QString o , QString val)
     QString roCom = "public";
     QString v3PrivPass = "privatekey1";
     QString v3AuthPass = "authkey123";
-    QString name = "IDC-BUSBAR";
+    QString name = "Busbar";
 
     int setVersion = version3;
     Snmp::socket_startup();  // Initialize socket subsystem
