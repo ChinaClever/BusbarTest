@@ -62,3 +62,5 @@ compile_commands.json
 *.bmp
 *.xlsx
 *.xlsx
+*.user
+BusbarTest.pro.user
