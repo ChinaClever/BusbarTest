@@ -502,13 +502,13 @@ void Test_CoreThread::workDown()
             if(ret) ret = checkVersion();
             if(ret) checkBaseInfo();
             if(ret) ret = checkAlarmErr();//检查报警阈值
-            if(ret) ret = factorySet();
+
             emit noLoadSig();
             while(true){
                 sleep(1);
                 if(mRet == 1 || mRet == 2) break;
             }
-            if(mRet == 1 || mRet == 2) ret = checkVolErrRange();
+            if(mRet == 1 || mRet == 2) {ret = checkVolErrRange();if(ret) ret = factorySet();}
             mRet = -1;
         }
     }

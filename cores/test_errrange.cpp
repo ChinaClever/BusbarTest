@@ -209,9 +209,9 @@ bool Test_ErrRange::zeroLineCurAlarm()
     sObjCfg *cth = mItem->modeId == START_BUSBAR ?(&(mItem->ip_cfg)):(&(mItem->si_cfg));
 //    sObjCfg *cth = &(mItem->ip_cfg);
     sRtuCurUintUnit *unit = &(mBusData->box[mItem->addr - 1].zeroLineCur);
-    uint min = cth->zerocur.min*cth->zerocur.rate;
+    // uint min = cth->zerocur.min*cth->zerocur.rate;
     uint max = cth->zerocur.max*cth->zerocur.rate;
-    if(unit->smin != min) ret = false;
+    // if(unit->smin != min) ret = false;
     if(unit->smax != max) ret = false;
 
     return ret;
@@ -263,6 +263,13 @@ void Test_ErrRange::compareInsertInfo()
     if(curValue == expect) ret = true;
     str = tr("插接箱iOF触点实际值：%1 , 期待值：%2！").arg(curValue?tr("有"):tr("无")).arg(expect?tr("有"):tr("无"));
     mLogs->updatePro(str,ret);ret = false;
+
+    curValue = b->phaseFlag;
+    expect = mItem->si.si_phaseflag;
+    if(curValue == expect) ret = true;
+    str = tr("插接箱单相或三相实际值：%1 , 期待值：%2！").arg(curValue).arg(expect);
+    mLogs->updatePro(str,ret);ret = false;
+
 }
 void Test_ErrRange::compareEnvInfo()
 {
@@ -271,15 +278,15 @@ void Test_ErrRange::compareEnvInfo()
     sBoxData* b = &(mPacket->share_mem_get()->box[mItem->addr-1]);
     bool ret = false;
     int curValue = b->buzzerStatus;
-    int expect = mItem->si.si_buzzer;
+    int expect = mItem->si.tem_buzzer;
     if(curValue == expect) ret = true;
-    str = tr("插接箱蜂鸣器实际值：%1 , 期待值：%2！").arg(curValue?tr("关闭"):tr("开启")).arg(expect?tr("关闭"):tr("开启"));
+    str = tr("温度传感器蜂鸣器实际值：%1 , 期待值：%2！").arg(curValue?tr("关闭"):tr("开启")).arg(expect?tr("关闭"):tr("开启"));
     mLogs->updatePro(str,ret);ret = false;
 
     curValue = b->alarmTime;
-    expect = mItem->si.si_filter;
+    expect = mItem->si.tem_filter;
     if(curValue == expect) ret = true;
-    str = tr("插接箱过滤次数实际值：%1 , 期待值：%2！").arg(curValue).arg(expect);
+    str = tr("温度传感器过滤次数实际值：%1 , 期待值：%2！").arg(curValue).arg(expect);
     mLogs->updatePro(str,ret);ret = false;
 }
 QString Test_ErrRange::changeCurType(int index)

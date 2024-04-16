@@ -54,6 +54,12 @@ void Home_WorkWid::createWid()
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutDone()));
     connect(Json_Pack::bulid(this), &Json_Pack::httpSig, this, &Home_WorkWid::insertTextslots);
 
+    if(TEST1_TEST2){//---2楼质检
+        ui->lable_17->setText("PCB-A码");
+    }else{
+        ui->lable_17->setText("成品码");
+    }
+
 }
 
 void Home_WorkWid::initLayout()

@@ -44,9 +44,9 @@ bool Dev_Source::readRk9901()
         int curUnit = 100;
         if(rkIt.curUnit) curUnit *= 100;
         sObjData *obj = &(mDev->line);
-        for(int i=0; i<3; ++i) {
+        for(int i=0; i<9; ++i) {
             obj->vol.value[i] = rkIt.vol;
-            obj->cur.value[i] = rkIt.cur/10;
+            obj->cur.value[i] = rkIt.cur;
             obj->pow[i] = rkIt.pow/1000;//有功功率
             obj->hz[i] = rkIt.hz;
             obj->pf[i] = rkIt.pf;

@@ -42,6 +42,8 @@ void Set_LineUnitWid::showAndHideWid(bool show)
     ui->zerocurMaxSpin->setHidden(show);/////////////////////////////////////////////////////////////////////////////
     ui->label_2->setHidden(show);
     ui->reMaxSpin->setHidden(show);
+    ui->label_17->hide();
+    ui->zerocurMinSpin->hide();
 }
 
 void Set_LineUnitWid::init(sObjCfg *obj , int index)

@@ -47,11 +47,8 @@ private slots:
 //    void on_readBtn_clicked();
 
     void insertTextslots(QString str,bool res);
-    void on_printBtn_clicked();
-
     void noLoadSlot();
     void on_clearEleBtn_clicked();
-
     void on_snEdit_textChanged(const QString &arg1);
 
 private:

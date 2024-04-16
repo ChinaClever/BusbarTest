@@ -3,7 +3,7 @@
 #include <QtCore>
 #include <QColor>
 
-#define LINE_NUM  3
+#define LINE_NUM  9
 #define SENOR_NUM 1
 #define NAME_SIZE 32
 #define DEV_NUM 3
@@ -41,7 +41,7 @@
 #define SRC_DATA_LEN_MAX 1024 //一包数据最长 —— 用于对接动环
 
 
-#define TEST1_TEST2 0//0:1楼质检     1:2楼质检
+#define TEST1_TEST2 1//0:1楼质检     1:2楼质检
 #define ZHIJIANGINSERTBOXZERO 0 //之江零线电流定制 1:启用 0:不启用
 
 
@@ -497,6 +497,7 @@ typedef struct _sBoxData {
     ushort rtuLen;
     uchar rtuArray[SRC_DATA_LEN_MAX];
     QString mac;
+    uchar phaseFlag;// 单相或者三相
 }sBoxData;
 
 
