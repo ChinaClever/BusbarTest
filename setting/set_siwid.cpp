@@ -40,6 +40,7 @@ void Set_SiWid::initType()
     int ver = dt->si_version;
     QString str = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
     ui->verlineEdit->setText(str);
+    ui->phaseBox->setCurrentIndex(dt->si_phaseflag);
 }
 
 void Set_SiWid::updateType()
@@ -50,6 +51,7 @@ void Set_SiWid::updateType()
     dt->si_filter = ui->filterspinBox->value();
     dt->si_iOF = ui->iOFBox->currentIndex();
     dt->si_version = ui->verlineEdit->text().remove(".").toUInt();
+    dt->si_phaseflag = ui->phaseBox->currentIndex();
 }
 
 bool Set_SiWid::inputCheck()

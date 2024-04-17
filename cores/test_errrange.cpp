@@ -269,7 +269,6 @@ void Test_ErrRange::compareInsertInfo()
     if(curValue == expect) ret = true;
     str = tr("插接箱单相或三相实际值：%1 , 期待值：%2！").arg(curValue).arg(expect);
     mLogs->updatePro(str,ret);ret = false;
-
 }
 void Test_ErrRange::compareEnvInfo()
 {

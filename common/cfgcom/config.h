@@ -117,6 +117,7 @@ struct sSiCfg {
     uchar si_filter;
     uchar si_iOF;
     ushort si_version;
+    ushort si_phaseflag;
 
     //四个温度
     double temMax[4];

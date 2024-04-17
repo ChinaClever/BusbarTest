@@ -95,7 +95,7 @@ struct Rtu_recv {
     uchar isd;// ISD状态
     uchar reState;// 剩余电流检测模块选配情况
 //    uchar boxType;//插接箱 ： 0  温控 ：1
-
+    uchar phaseFlag;//  0 ：单相  1 ：三相
     RtuRecvLine data[RTU_LOOP_NUM];
     RtuRecvEnv  env[RTU_TH_NUM];
     RtuUintUnit totalPow; //总有功功率
