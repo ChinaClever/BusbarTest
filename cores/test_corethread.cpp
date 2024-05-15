@@ -52,8 +52,7 @@ bool Test_CoreThread::initDev()
 {
     mLogs->updatePro(tr("即将开始"));
     bool ret  = false;
-    if(mItem->modeId == START_BUSBAR)ret = true;
-    else ret = mRead->readSn();
+    ret = mRead->readSn();
     return ret;
 }
 
@@ -190,10 +189,10 @@ bool Test_CoreThread::envErrRange()
     bool ret = true;
     for(int i = 0 ; i < 4 ; i++){
         ret = mErr->temErr(i);
-        QString str = tr("传感器温度%1，实测温度= %2℃，").arg(i+1).arg(mBusData->box[mItem->addr - 1].env.tem.value[0]);
+        QString str = tr("传感器温度%1，实测温度= %2℃，").arg(i+1).arg(mBusData->box[mItem->addr - 1].env.tem.value[i]);
         if(ret) str += tr("正常");
         else {
-            if(mBusData->box[mItem->addr - 1].env.tem.value[0]) {
+            if(mBusData->box[mItem->addr - 1].env.tem.value[i]) {
                 str += tr("错误");
             } else {
                 str = tr("请插入传感器，实测温度 = 0");
