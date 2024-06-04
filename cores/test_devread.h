@@ -18,6 +18,7 @@ public:
     bool readDevData();
     QString getConnectModeOid();
     bool SetInfo(QString o , QString val);
+    Dev_Source *mSource;
 
 protected:
     void run();
@@ -36,7 +37,7 @@ private:
     Dev_IpRtu *mIpRtu;
     Sn_SerialNum *mSn;
     Dev_IpSnmp *mIpSnmp;
-    Dev_Source *mSource;
+
     Test_Logs *mLogs;
     sCfgItem *mItem;
 };

@@ -60,6 +60,7 @@ bool Test_CoreThread::volErrRange(int i)
 {
     bool ret = true;
     for(int k=0; k<5; ++k) {
+        mRead->mSource->read();
         ret = mErr->volErr(i);
         if(ret) break; else mRead->readDevData();
     }
