@@ -105,7 +105,7 @@ bool Ctrl_SiRtu::factorySet()
 //    return mModbus->write(it);
 //}
 
-bool Ctrl_SiRtu::sentRtuCmd(ushort reg, ushort value, uchar fn)
+bool Ctrl_SiRtu::sentRtuCmd(ushort reg, ushort value, uchar fn)//
 {
     bool ret = true;
     Rtu_Sent_Single_Ushort_V3 it;
@@ -122,6 +122,7 @@ bool Ctrl_SiRtu::sentRtuCmd(ushort reg, ushort value, uchar fn)
 
     return ret;
 }
+
 
 bool Ctrl_SiRtu::rtu_sent_ushortV3_buff(uchar addr, ushort reg, uint num,  uint val1, uint val2 )
 {
@@ -167,6 +168,7 @@ bool Ctrl_SiRtu::setBusbarStartEle(int index)//清始端箱电能
 {
     bool ret = true;
     ret = sentRtuCmd(StartEle_3031+(index-1)*110, 1);
+    // ret = rtu_sent_ushortV3_buff(0x1,StartEle_3031 - 1 +(index-1)*110, 2 , 1 ,1);
 
     return ret;
 }
@@ -222,7 +224,7 @@ bool Ctrl_SiRtu::setBusbarStartLineVol(int index , int val1 , int val2)//test
 bool Ctrl_SiRtu::setBusbarInsertEle(int index)
 {
     bool ret = true;
-    ret = sentRtuCmd(SetPlugEle_1+(index-1)*15, 1);
+    ret = rtu_sent_ushortV3_buff(0x2,SetPlugEle_1 - 1 +(index-1)*15, 2 , 1 ,1);
 
     return ret;
 }

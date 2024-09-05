@@ -24,6 +24,9 @@ protected:
     void showAndHideWid(bool show=false);
     int transformRate(int index);
 
+private slots:
+    void on_curMaxSpin_textChanged(const QString &arg1);
+
 private:
     Ui::Set_LineUnitWid *ui;
     sObjCfg *mDev;

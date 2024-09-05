@@ -512,7 +512,7 @@ void Test_CoreThread::workDown()
             mRet = -1;
         }
     }
-    if(!ret)mPro->result = Test_Fail;
+    if(!ret) mPro->result = Test_Fail;
     workResult(ret);
 }
 void Test_CoreThread::noloadHomeSlot(int ret)

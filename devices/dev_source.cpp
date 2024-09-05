@@ -37,7 +37,7 @@ bool Dev_Source::readRk9901()
 {
     sRkItem rkIt;
 #if TEST1_TEST2
-    mItem->coms.source->setBaudRate(4800);
+    mItem->coms.source->setBaudRate(9600);
     bool ret = mRk->readPacket(rkIt);
 
     if(ret) {
@@ -105,9 +105,9 @@ bool Dev_Source::readSiPdu()
 bool Dev_Source::read()
 {
     bool ret = false;
-    if(mItem->vref) {
+    // if(mItem->vref) {
         ret = readRk9901();
-    }
+    // }
 //    else {
 //        ret = readSiPdu();
 //    }

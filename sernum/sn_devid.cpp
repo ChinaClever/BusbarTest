@@ -55,7 +55,7 @@ bool Sn_DevId::readDevId()
     static uchar recv[256] = {0};
     for(int i=0; i<5; ++i) {
         len = mModbus->readSn(it, recv);
-        if(len) break; else if(!mPacket->delay(1)) break;
+        if(len==4) break; else if(!mPacket->delay(4+i)) break;
         // if(i>1) mModbus->changeBaudRate();
     }   
 

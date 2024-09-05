@@ -75,7 +75,7 @@ bool Test_ErrRange::temErr(int id)
     int pass = Test_Fail;
     int value = mBusData->box[mItem->addr - 1].env.tem.value[id];
 
-    if((value>0)&&(value<100))ret=true;
+    if((value>0)&&(value<50))ret=true;
     if(ret) pass = Test_Pass;
     mBusData->box[mItem->addr - 1].env.tem.status[id] = pass;
 

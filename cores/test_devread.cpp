@@ -230,7 +230,7 @@ void Test_DevRead::run()
     if(isRun) return;
     isRun = true;
 
-    mPacket->init();
+    // mPacket->init();
     mPro->step = Collect_Start;
 
     bool ret  = readSn();

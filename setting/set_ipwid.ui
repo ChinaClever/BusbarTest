@@ -487,8 +487,11 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
         <property name="value">
-         <number>2</number>
+         <number>5</number>
         </property>
        </widget>
       </item>
