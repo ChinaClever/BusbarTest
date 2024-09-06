@@ -8,6 +8,7 @@ class Test_CoreThread : public Test_Object
     Q_OBJECT
 public:
     explicit Test_CoreThread(QObject *parent = nullptr);
+    bool printer();
 
 protected slots:
     void initFunSlot();
@@ -54,6 +55,7 @@ protected:
 
     bool factorySet();
     void workResult(bool);
+
 
     void checkBaseInfo();
     bool checkVersion();

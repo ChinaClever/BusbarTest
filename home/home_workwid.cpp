@@ -55,9 +55,7 @@ void Home_WorkWid::createWid()
     connect(Json_Pack::bulid(this), &Json_Pack::httpSig, this, &Home_WorkWid::insertTextslots);
 
     if(TEST1_TEST2){//---2楼质检
-        ui->lable_17->setText("PCB-A码");
-    }else{
-        ui->lable_17->setText("成品码");
+        ui->lable_17->setText("规格书二维码");
     }
 
 }
@@ -366,5 +364,13 @@ void Home_WorkWid::on_clearEleBtn_clicked()
 void Home_WorkWid::on_snEdit_textChanged(const QString &arg1)
 {
     ui->snEdit->setClearButtonEnabled(1);
+}
+
+
+void Home_WorkWid::on_printBtn_clicked()
+{
+    if(mPro->result != Test_Fail){
+        mCoreThread->printer();
+    }
 }
 

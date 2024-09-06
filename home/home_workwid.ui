@@ -720,6 +720,19 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="printBtn">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>打印标签</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

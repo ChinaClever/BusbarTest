@@ -425,6 +425,53 @@ void Test_CoreThread::clearStartEleSlot()
     return;
 }
 
+bool Test_CoreThread::printer()
+{
+    QString method = "Integration/Busbar-Module/Execute";
+    QString ip = "127.0.0.1";
+    bool ret = true;
+    QString str = tr("标签打印 "); QString str1;
+        if(mPro->result != Test_Fail){
+        sBarTend it;
+        QString mPn = mItem->pn;//订单号+成品代码
+        QStringList list = mPn.split("+");
+        for(int i = 0; i < list.count(); i++)
+        {
+            if(i == 0) it.on = list.at(i);
+            if(i == 1) it.pn = list.at(i);
+        }
+
+        QString mSn = mDev->devType.sn;//模块序列号
+        it.sn =  mSn.remove(QRegExp("\\s"));
+
+        int ver = get_share_mem()->box[mItem->addr-1].version;//软件版本号
+        it.fw = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
+        it.hw = "V1.0";//暂时设置默认值
+        if(it.sn.isEmpty() || it.fw.isEmpty()){
+            mPro->result = Test_Fail;
+            ret  = false;
+            if(it.sn.isEmpty()) str += tr(" 读取到序列号SN为空 ");
+            if(it.fw.isEmpty()) str += tr(" 读取到软件版本FW为空 ");
+            if(it.hw.isEmpty()) str += tr(" 读取到硬件版本HW为空 ");
+        }
+
+        if(ret){
+            str1 = Printer_BarTender::bulid(this)->http_post(method, ip, it);
+            if(str1 == "Success") {
+                ret = true;
+            }else {
+                str1 = Printer_BarTender::bulid(this)->http_post(method, ip, it);
+                if(str1 == "Success") {
+                    ret = true;
+                }else ret = false;
+            }
+        }
+        if(ret) str += tr("正常"); else str += tr("错误");
+    } else str = tr("因测试未通过，标签未打印");
+
+    return mPacket->updatePro(str, ret);
+}
+
 void Test_CoreThread::workResult(bool)
 {
     mLogs->saveLogs();

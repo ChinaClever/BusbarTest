@@ -51,6 +51,8 @@ private slots:
     void on_clearEleBtn_clicked();
     void on_snEdit_textChanged(const QString &arg1);
 
+    void on_printBtn_clicked();
+
 private:
     Ui::Home_WorkWid *ui;
 

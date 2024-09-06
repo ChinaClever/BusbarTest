@@ -11,9 +11,9 @@
 
 Printer_BarTender::Printer_BarTender(QObject *parent) : QObject(parent)
 {
-//    mSocket = new QUdpSocket(this);
-//    mSocket->bind(QHostAddress::AnyIPv4, 47755);
-//    connect(mSocket,SIGNAL(readyRead()),this,SLOT(recvSlot()));
+   mSocket = new QUdpSocket(this);
+   mSocket->bind(QHostAddress::AnyIPv4, 47755);
+   connect(mSocket,SIGNAL(readyRead()),this,SLOT(recvSlot()));
 }
 
 Printer_BarTender *Printer_BarTender::bulid(QObject *parent)
@@ -24,12 +24,43 @@ Printer_BarTender *Printer_BarTender::bulid(QObject *parent)
     return sington;
 }
 
+QString Printer_BarTender::http_post(const QString &method, const QString &ip, sBarTend &it, int port)
+{
+    QByteArray json; QString str;
+    QString order = createOrder(it);
+    json.append(order.toLocal8Bit());
+    qDebug()<<"createOrder"<<order;
+    qDebug()<<"json"<<json;
+    AeaQt::HttpClient http;
+    http.clearAccessCache();
+    http.clearConnectionCache();
+    QString url = "http://%1:%2/%3";
+    http.post(url.arg(ip).arg(port).arg(method))
+        .header("content-type", "plain")
+        .onSuccess([&](QString result) {qDebug()<<"result"<<result; str = result;})
+        .onFailed([&](QString error) {qDebug()<<"error"<<error; str = error;})
+        .onTimeout([&](QNetworkReply *) {qDebug()<<"http_post timeout";}) // 超时处理
+        .timeout(2) // 1s超时
+        .block()
+        .body(json)
+        .exec();
+
+    return str;
+}
+
 QString Printer_BarTender::createOrder(sBarTend &it)
 {
-    QString str = "PN,HW,FW,Date\n";
-    str += it.pn + ","; str += it.hw + ","; str += it.fw + ",";
-    QString date = QDate::currentDate().toString("yyyy-MM-dd");
-    str += date;
+    QString web = "http://172.16.21.120:88/report?";
+    QString str = "ON,PN,SN,FW,HW,Date,QR\n";
+    str += it.on + ","; str += it.pn + ","; str += it.sn + ",";
+    str += it.fw + ","; str += it.hw + ",";
+
+    QDateTime dateTime;
+    QString dateTime_str = dateTime.currentDateTime().toString("yyyy/MM/dd hh:mm");
+    str += dateTime_str + ",";
+    web += QString("productSN=%1&orderId=%2&moduleSN=%3").arg(it.on).arg(it.pn).arg(it.sn);
+    str += web;
+
     return str;
 }
 
