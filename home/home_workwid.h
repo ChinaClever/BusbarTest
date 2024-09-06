@@ -49,9 +49,11 @@ private slots:
     void insertTextslots(QString str,bool res);
     void noLoadSlot();
     void on_clearEleBtn_clicked();
-    void on_snEdit_textChanged(const QString &arg1);
-
     void on_printBtn_clicked();
+
+    void on_hwEdit_textEdited(const QString &arg1);
+
+    void on_on_pnEdit_textEdited(const QString &arg1);
 
 private:
     Ui::Home_WorkWid *ui;

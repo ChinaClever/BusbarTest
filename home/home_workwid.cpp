@@ -15,7 +15,9 @@ Home_WorkWid::Home_WorkWid(QWidget *parent) :
     ui->setupUi(this);
 
     mFirst = 0;
+    Cfg::bulid()->readQRcode();
     createWid();
+
     initLayout();
 }
 
@@ -40,6 +42,8 @@ void Home_WorkWid::createWid()
     mItem = Cfg::bulid()->item;
     mPro->step = Test_End;
 
+    ui->on_pnEdit->setText(mItem->pn);
+    ui->hwEdit->setText(mItem->hw_ver);
     ui->readBtn->setHidden(true);
     mItem->addr = Cfg::bulid()->initAddr();
     Cfg::bulid()->initPrint();
@@ -53,10 +57,6 @@ void Home_WorkWid::createWid()
     timer->start(100);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutDone()));
     connect(Json_Pack::bulid(this), &Json_Pack::httpSig, this, &Home_WorkWid::insertTextslots);
-
-    if(TEST1_TEST2){//---2楼质检
-        ui->lable_17->setText("规格书二维码");
-    }
 
 }
 
@@ -195,11 +195,21 @@ void Home_WorkWid::updateWid()
     // str = mItem->modeId == START_BUSBAR?tr("始端箱"):tr("插接箱");
     int ver = get_share_mem()->box[mItem->addr-1].version;
     if(ver != 0)str += "  版本："+QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
-    ui->userLab->setText(mItem->user);
-    mPro->clientName = mItem->user;
-    mPro->goods_SN = mItem->sn;
-    // mPro->productType = mDev->devType.devType;
+
     mPro->softwareVersion = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
+
+    QString mPn = ui->on_pnEdit->text();//订单号+成品代码
+    QStringList list = mPn.split("+");
+    for(int i = 0; i < list.count(); i++)
+    {
+        if(i == 0) mPro->on = list.at(i);
+        if(i == 1) mPro->pn = list.at(i);
+    }
+
+    mItem->pn = mPn;
+    mItem->user = mPro->on;
+    ui->userLab->setText(mItem->user);
+    mItem->hw_ver = ui->hwEdit->text();
 
     if(mPro->step < Test_Over) {
         updateTime();
@@ -239,9 +249,10 @@ bool Home_WorkWid::initSerial()
     //    mItem->macCheck = ui->guideCheck->isChecked()?1:0;
     //    mItem->temCheck = ui->temCheck->isChecked();
     Cfg::bulid()->setAddr(mItem->addr);
+    Cfg::bulid()->writeQRcode();//成品sn===成品代码+订单号
 
     bool ret = false;
-    mItem->sn = ui->snEdit->text();
+    mItem->sn = ui->on_pnEdit->text();
     if(mItem->modeId == TEMPER_BUSBAR){
         ret = true;
     }else{
@@ -361,11 +372,6 @@ void Home_WorkWid::on_clearEleBtn_clicked()
     emit clearStartEleSig();
 }
 
-void Home_WorkWid::on_snEdit_textChanged(const QString &arg1)
-{
-    ui->snEdit->setClearButtonEnabled(1);
-}
-
 
 void Home_WorkWid::on_printBtn_clicked()
 {
@@ -373,4 +379,17 @@ void Home_WorkWid::on_printBtn_clicked()
         mCoreThread->printer();
     }
 }
+
+
+void Home_WorkWid::on_hwEdit_textEdited(const QString &arg1)
+{
+    ui->hwEdit->setClearButtonEnabled(1);
+}
+
+
+void Home_WorkWid::on_on_pnEdit_textEdited(const QString &arg1)
+{
+    ui->on_pnEdit->setClearButtonEnabled(1);
+}
+
 

@@ -249,6 +249,20 @@ void Cfg::initUnit(const QString& prefix, sUnitCfg &unit,const QString &g, int f
     unit.max = read(prefix+"_max", 10 , g).toFloat();
 }
 
+void Cfg::readQRcode()
+{
+    item->pn = read("on_pn", "", "BusbarSys").toString();
+    item->user = read("user", "", "BusbarUser").toString();
+    item->hw_ver = read("hw_ver", "", "BusbarUser").toString();
+}
+
+void Cfg::writeQRcode()
+{
+    write("on_pn", item->pn, "BusbarSys");
+    write("user", item->user, "BusbarUser");
+    write("hw_ver", item->hw_ver, "BusbarUser");
+}
+
 
 /**
  * @brief 获取串口名称

@@ -575,6 +575,7 @@ struct sProgress
     QString dcw;
     QString acw;
     QString pn;
+    QString on;
     // uchar softwareVersion;
     QString softwareVersion;
     QString clientName;

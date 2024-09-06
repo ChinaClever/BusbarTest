@@ -48,6 +48,9 @@ void sDataPacket::clear(int id)
     pro->itemName.clear();
     pro->uploadPass.clear();
     pro->softwareVersion.clear();
+
+    pro->pn.clear();
+    pro->on.clear();
 }
 
 

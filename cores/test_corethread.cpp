@@ -446,7 +446,8 @@ bool Test_CoreThread::printer()
 
         int ver = get_share_mem()->box[mItem->addr-1].version;//软件版本号
         it.fw = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
-        it.hw = "V1.0";//暂时设置默认值
+        it.hw = mItem->hw_ver;//暂时设置默认值
+
         if(it.sn.isEmpty() || it.fw.isEmpty()){
             mPro->result = Test_Fail;
             ret  = false;
@@ -482,9 +483,13 @@ void Test_CoreThread::workResult(bool)
     bool res = false;
     QString str = tr("最终结果 ");
     if(mPro->result != Test_Fail) {
-        res = true;
-        str += tr("通过");
-        mPro->uploadPassResult = 1;
+        res = printer();
+        if(res){
+            str += tr("通过"); mPro->uploadPassResult = 1;
+        }else {
+            str += tr("失败"); mPro->uploadPassResult = 0;
+        }
+
     } else {
         res = false;
         str += tr("失败");
