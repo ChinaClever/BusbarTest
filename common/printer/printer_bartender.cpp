@@ -12,7 +12,7 @@
 Printer_BarTender::Printer_BarTender(QObject *parent) : QObject(parent)
 {
    mSocket = new QUdpSocket(this);
-   mSocket->bind(QHostAddress::AnyIPv4, 47755);
+   mSocket->bind(QHostAddress::LocalHost, 47755);
    connect(mSocket,SIGNAL(readyRead()),this,SLOT(recvSlot()));
 }
 
@@ -40,7 +40,7 @@ QString Printer_BarTender::http_post(const QString &method, const QString &ip, s
         .onSuccess([&](QString result) {qDebug()<<"result"<<result; str = result;})
         .onFailed([&](QString error) {qDebug()<<"error"<<error; str = error;})
         .onTimeout([&](QNetworkReply *) {qDebug()<<"http_post timeout";}) // 超时处理
-        .timeout(2) // 1s超时
+        .timeout(6) // 6s超时
         .block()
         .body(json)
         .exec();

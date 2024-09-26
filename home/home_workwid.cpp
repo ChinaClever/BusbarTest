@@ -19,6 +19,7 @@ Home_WorkWid::Home_WorkWid(QWidget *parent) :
     createWid();
 
     initLayout();
+    QTimer::singleShot(7*1000,this,SLOT(PingSlot())); //延时初始化
 }
 
 Home_WorkWid::~Home_WorkWid()
@@ -41,6 +42,7 @@ void Home_WorkWid::createWid()
     mPro = mPacket->getPro();
     mItem = Cfg::bulid()->item;
     mPro->step = Test_End;
+    mItem->online = false;
 
     ui->on_pnEdit->setText(mItem->pn);
     ui->hwEdit->setText(mItem->hw_ver);
@@ -74,6 +76,23 @@ void Home_WorkWid::initLayout()
 
     ui->guideCheck->hide();
     ui->temCheck->hide();
+}
+
+void Home_WorkWid::PingSlot()
+{
+    QString ip;
+    bool ret = false;
+    QString str = tr("服务端IP异常");
+    for(int k=0; k<2; ++k) {
+        if(!ret) {
+            mPacket->delay(2);
+            ip = mItem->Service;
+            ret = cm_pingNet(ip);
+        }
+        if(ret) break;
+    }
+    if(ret) mItem->online = true;
+    if(!ret) MsgBox::information(this,str);
 }
 
 void Home_WorkWid::setTextColor()
@@ -187,10 +206,9 @@ void Home_WorkWid::updateWid()
 {
     QString str = mDev->devType.sn;
     ui->snLab->setText(str);
-    mPro->productSN = str;
-
+    mPro->module_sn = str;
+    mPro->type = mItem->addr;
     str = mDev->devType.dev_type;
-    mPro->productType = str;
     ui->devLab->setText(str);
     // str = mItem->modeId == START_BUSBAR?tr("始端箱"):tr("插接箱");
     int ver = get_share_mem()->box[mItem->addr-1].version;
@@ -202,14 +220,17 @@ void Home_WorkWid::updateWid()
     QStringList list = mPn.split("+");
     for(int i = 0; i < list.count(); i++)
     {
-        if(i == 0) mPro->on = list.at(i);
-        if(i == 1) mPro->pn = list.at(i);
+        if(i == 0) mPro->order_id = list.at(i);
+        if(i == 1) mPro->product_sn = list.at(i);
     }
 
     mItem->pn = mPn;
-    mItem->user = mPro->on;
+    mItem->user = mPro->order_id;
     ui->userLab->setText(mItem->user);
     mItem->hw_ver = ui->hwEdit->text();
+
+    mPro->online = mItem->online;
+    mPro->Service = mItem->Service;
 
     if(mPro->step < Test_Over) {
         updateTime();
@@ -231,7 +252,6 @@ void Home_WorkWid::on_setBtn_clicked()
 
 void Home_WorkWid::timeoutDone()
 {
-    ui->addrSpin->setValue(mItem->addr);
     // if(mPro->step) {
         insertText();
         updateWid();
@@ -244,6 +264,8 @@ bool Home_WorkWid::initSerial()
     QString str;  mId = 1;
     sSerial *coms = &(mItem->coms);
     mDev->id = ui->addrSpin->value();
+    mItem->addr = ui->addrSpin->value();
+
     mItem->eleCheck = ui->eleCheck->isChecked();
     mItem->vref = ui->vrefCheck->isChecked();
     //    mItem->macCheck = ui->guideCheck->isChecked()?1:0;
@@ -375,7 +397,7 @@ void Home_WorkWid::on_clearEleBtn_clicked()
 
 void Home_WorkWid::on_printBtn_clicked()
 {
-    if(mPro->result != Test_Fail){
+    if(mPro->step == Test_End){
         mCoreThread->printer();
     }
 }

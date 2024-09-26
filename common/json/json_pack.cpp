@@ -24,24 +24,24 @@ Json_Pack *Json_Pack::bulid(QObject *parent)
 void Json_Pack::head(QJsonObject &obj)
 {
     QDateTime t = QDateTime::currentDateTime();
-    mPro->testEndTime = t.toString("yyyy-MM-dd HH:mm:ss");
     mPro->testTime = QString::number(QDateTime::fromString(mPro->testStartTime,"yyyy-MM-dd HH:mm:ss").secsTo(t));
-    obj.insert("softwareType", mPro->softwareType);
-    obj.insert("productType", mPro->productType);
-    obj.insert("productSN", mPro->productSN);
-    obj.insert("macAddress", mPro->macAddress);
-    obj.insert("result", mPro->uploadPassResult);
-    obj.insert("softwareVersion", mPro->softwareVersion);
-    obj.insert("clientName", mPro->clientName);
-    obj.insert("work_order", mPro->companyName);
-    obj.insert("protocolVersion", mPro->protocolVersion);
-    obj.insert("testStartTime", mPro->testStartTime);
-    obj.insert("testEndTime", mPro->testEndTime);
+    mPro->testTime += "s";
+
+    obj.insert("orderId", mPro->order_id);
+    obj.insert("productSn", mPro->product_sn);
+    obj.insert("moduleType", mPro->module_type);
+    obj.insert("moduleSn", mPro->module_sn);
+    obj.insert("softVersion", mPro->softwareVersion);
+    obj.insert("languageSelect", mPro->language);
+
+    obj.insert("testStep", mPro->test_step);
+    obj.insert("testItem", mPro->test_item);
+    obj.insert("testRequire", mPro->test_require);
+    obj.insert("testResult", mPro->test_result);
+    obj.insert("judgeResult", mPro->judge_result);
     obj.insert("testTime", mPro->testTime);
-    obj.insert("goods_SN", mPro->goods_SN);
 
-
-    pduInfo(obj);
+    // pduInfo(obj);
 }
 
 void Json_Pack::pduInfo(QJsonObject &obj)
@@ -78,17 +78,17 @@ void Json_Pack::getJson(QJsonObject &json , QByteArray &ba)
 void Json_Pack::http_post(const QString &method, const QString &ip, int port)
 {
     QJsonObject json; head(json);
-
+    qDebug()<<"http_post"<<json;
     AeaQt::HttpClient http;
     http.clearAccessCache();
     http.clearConnectionCache();
     QString url = "http://%1:%2/%3";
     http.post(url.arg(ip).arg(port).arg(method))
         .header("content-type", "application/json")
-        .onSuccess([&](QString result) {qDebug()<<"result    "<<result;mPro->result = Test_Over;emit httpSig("数据发送成功",true);})
-        .onFailed([&](QString error) {qDebug()<<"error    "<<error;mPro->result = Test_Fail;emit httpSig("数据发送失败",false); })
-        .onTimeout([&](QNetworkReply *) {qDebug()<<"http_post timeout    ";mPro->result = Test_Fail;emit httpSig("http_post timeout",false); }) // 超时处理
-        .timeout(1000) // 1s超时
+        .onSuccess([&](QString result) {qDebug()<<"result"<<result;})
+        .onFailed([&](QString error) {qDebug()<<"error"<<error;})
+        .onTimeout([&](QNetworkReply *) {qDebug()<<"http_post timeout";}) // 超时处理
+        .timeoutMs(200) // 200ms超时
         .block()
         .body(json)
         .exec();

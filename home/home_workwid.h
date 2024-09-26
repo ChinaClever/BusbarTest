@@ -54,7 +54,7 @@ private slots:
     void on_hwEdit_textEdited(const QString &arg1);
 
     void on_on_pnEdit_textEdited(const QString &arg1);
-
+    void PingSlot();
 private:
     Ui::Home_WorkWid *ui;
 

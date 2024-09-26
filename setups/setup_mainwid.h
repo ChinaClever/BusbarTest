@@ -24,13 +24,18 @@ protected:
     void writeLogCount();
     void initPcNum();
     void writePcNum();
-
+    void checkAddr();
+    void checkPcNum();
+    void initAddr();
+    void writeAddr();
 protected slots:
     void initFunSlot();
     void checkPcNumSlot();
-    void on_pcBtn_clicked();
     void on_verBtn_clicked();
     void on_saveBtn_clicked();
+
+private slots:
+    void on_pcBtn_clicked();
 
 private:
     Ui::Setup_MainWid *ui;

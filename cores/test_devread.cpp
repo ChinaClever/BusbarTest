@@ -34,8 +34,16 @@ bool Test_DevRead::readSn()
 {
     bool ret = true;
     ret = mSn->snEnter();
+    QString str = "可以读取到序列号";
+    mPacket->writeData("精度检查", "序列号检查", str, mDev->devType.sn, ret);
+
+    str = "Can read the serial number";
+    QString str1 = "Accuracy inspection";
+    QString str2 = "Serial number check";
+    mPacket->writeData_L(str1, str2, str , mDev->devType.sn, ret);
 
     if(ret) ret = readDevData();
+
     return ret;
 }
 

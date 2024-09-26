@@ -28,6 +28,12 @@ void Setup_MainWid::initFunSlot()
     initPcNum();
     initLogCount();
     initErrData();
+    initAddr();
+
+    if(ui->addrEdit->text().isEmpty()) {
+        ui->addrEdit->setText("192.168.1.15");
+        mItem->Service = ui->addrEdit->text();
+    }
 
     mUserWid = new UserMainWid(ui->stackedWid);
     ui->stackedWid->addWidget(mUserWid);
@@ -109,6 +115,21 @@ void Setup_MainWid::on_saveBtn_clicked()
     ui->powErrBox->setEnabled(ret);
 }
 
+void Setup_MainWid::initAddr()
+{
+    Cfg *con = Cfg::bulid();
+    QString value = con->read("service_addr", "", "Sys").toString();
+
+    mItem->Service = value;
+    ui->addrEdit->setText(value);
+}
+
+void Setup_MainWid::writeAddr()
+{
+    QString arg1 = ui->addrEdit->text();
+    mItem->Service = arg1;
+    Cfg::bulid()->write("service_addr", arg1, "Sys");
+}
 
 void Setup_MainWid::initPcNum()
 {
@@ -119,8 +140,7 @@ void Setup_MainWid::initPcNum()
     ui->pcNumSpin->setValue(value);
 }
 
-
-void Setup_MainWid::checkPcNumSlot()
+void Setup_MainWid::checkPcNum()
 {
     int num = mItem->pcNum;
     if(num < 1) {
@@ -128,8 +148,21 @@ void Setup_MainWid::checkPcNumSlot()
             MsgBox::warning(this, tr("请联系研发部设定电脑号！\n 服务设置 -> 设置功能 \n 需要管理员权限!"));
         else
             MsgBox::warning(this, tr("请自行设定电脑号！\n 服务设置 -> 设置功能 \n 需要管理员权限!"));
-        QTimer::singleShot(20*1000,this,SLOT(checkPcNumSlot()));
     }
+}
+
+void Setup_MainWid::checkAddr()
+{
+    QString str = ui->addrEdit->text();
+    if(str.isEmpty() || !str.contains("192.168."))
+        MsgBox::warning(this, tr("请设置正确格式的服务端IP!"));
+}
+
+void Setup_MainWid::checkPcNumSlot()
+{
+    checkPcNum(); checkAddr();
+    QTimer::singleShot(20*1000,this,SLOT(checkPcNumSlot()));
+
 }
 
 
@@ -138,6 +171,12 @@ void Setup_MainWid::writePcNum()
     int arg1 = ui->pcNumSpin->value();
     mItem->pcNum = arg1;
     Cfg::bulid()->write("pc_num", arg1, "Sys");
+}
+
+void Setup_MainWid::on_verBtn_clicked()
+{
+    VersionDlg dlg(this);
+    dlg.exec();
 }
 
 void Setup_MainWid::on_pcBtn_clicked()
@@ -155,6 +194,7 @@ void Setup_MainWid::on_pcBtn_clicked()
         ret = false;
         writePcNum();
         writeLogCount();
+        writeAddr();
     } else {
         str = tr("保存");
     }
@@ -162,10 +202,18 @@ void Setup_MainWid::on_pcBtn_clicked()
     ui->pcBtn->setText(str);
     ui->pcNumSpin->setEnabled(ret);
     ui->logCountSpin->setEnabled(ret);
+    ui->addrEdit->setEnabled(ret);
+
+    if(!ret) {
+        bool res = true;
+        QString str1 = tr("该服务端IP异常");
+        QString ip = ui->addrEdit->text();
+        for(int k=0; k<2; ++k) {
+            res = cm_pingNet(ip);
+            if(res) break;
+        }
+        if(res) mItem->online = true;
+        if(!res) MsgBox::information(this,str1);
+    }
 }
 
-void Setup_MainWid::on_verBtn_clicked()
-{
-    VersionDlg dlg(this);
-    dlg.exec();
-}

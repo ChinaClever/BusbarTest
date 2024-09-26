@@ -4,6 +4,7 @@
  *      Author: Lzy
  */
 #include "datapacket.h"
+#include "json_pack.h"
 
 sDataPacket::sDataPacket()
 {
@@ -32,25 +33,29 @@ void sDataPacket::clear(int id)
     pro->itPass.clear();
     pro->item.clear();
     pro->status.clear();
-    pro->startTime = QTime::currentTime();
-
-    pro->productType.clear();
-    pro->productSN.clear();
     pro->macAddress.clear();
-    pro->clientName.clear();
-    pro->testTime.clear();
-    pro->softwareType = "Busbar-Test";
-    pro->companyName = "clever";
-    pro->protocolVersion = "V1.0";
+
+
     // pro->testStartTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
     pro->testEndTime.clear();
     pro->no.clear();
     pro->itemName.clear();
     pro->uploadPass.clear();
-    pro->softwareVersion.clear();
 
-    pro->pn.clear();
-    pro->on.clear();
+    pro->softwareVersion.clear();
+    pro->product_sn.clear();
+    pro->order_id.clear();
+    pro->module_type.clear();
+    pro->module_sn.clear();
+    pro->testTime.clear();
+    pro->test_step.clear();
+    pro->test_item.clear();
+    pro->test_require.clear();
+    pro->test_result.clear();
+    pro->judge_result = 0;
+    pro->language = 0;
+    pro->Service.clear();
+    pro->type = 0;
 }
 
 
@@ -68,9 +73,6 @@ void sDataPacket::init()
     pro->step = Test_Fun;
     pro->result = Test_Info;
     pro->startTime = QTime::currentTime();
-    pro->softwareType = "Busbar-Test";
-    pro->companyName = "clever";
-    pro->protocolVersion = "V1.0";
     pro->testStartTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
 }
 
@@ -86,9 +88,51 @@ bool sDataPacket::updatePro(const QString &str, bool pass, int sec)
     if(pass) pass = delay(sec);
     else pro->result = Test_Fail;
     // if(!pass) BaseLogs::bulid()->appendLogItem(str, pass);
+
     return pass;
 }
 
+bool sDataPacket::writeData(const QString &str1, const QString &str2, const QString &str3, const QString &str4, bool pass, int sec)
+{
+    pro->time = QTime::currentTime().toString("hh:mm:ss");
+    pro->test_step = str1;
+    pro->test_item = str2;
+    pro->test_require = str3;
+    pro->test_result = str4;
+    pro->judge_result = pass;
+    pro->language = 0;
+
+    if(pro->type == 1) {
+        pro->module_type = "始端箱";
+    } else if(pro->type == 2) {
+        pro->module_type = "插接箱";
+    }
+
+    if(pro->online) Json_Pack::bulid()->http_post("admin-api/bus/moduleTest",pro->Service);//全流程才发送记录(http)
+
+    return pass;
+}
+
+bool sDataPacket::writeData_L(const QString &str1, const QString &str2, const QString &str3,  const QString &str4,bool pass, int sec)
+{
+    pro->time = QTime::currentTime().toString("hh:mm:ss");
+    pro->test_step = str1;
+    pro->test_item = str2;
+    pro->test_require = str3;
+    pro->test_result = str4;
+    pro->judge_result = pass;
+    pro->language = 1;
+
+    if(pro->type == 1) {
+        pro->module_type = "Busbar feeder box";
+    } else if(pro->type == 2) {
+        pro->module_type = "Busbar tap-off box";
+    }
+
+    if(pro->online) Json_Pack::bulid()->http_post("admin-api/bus/moduleTest",pro->Service);//全流程才发送记录(http)
+
+    return pass;
+}
 
 bool sDataPacket::delay(int s)
 {

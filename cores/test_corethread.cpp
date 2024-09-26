@@ -69,12 +69,29 @@ bool Test_CoreThread::volErrRange(int i)
     int b = mBusData->box[mItem->addr - 1].data.vol.value[i];
     float c = -1;
     if(a != 0)c = ((abs(a-b)*1.0)/a)*100.0;
-    QString str = tr("电压 L%1，期望电压=%2V，实测电压=%3V ，误差=%4 %").arg(i+1)
+    QString str = tr("电压 L%1：期望电压=%2V，实测电压=%3V ，误差=%4 %").arg(i+1)
             .arg(a/COM_RATE_VOL)
             .arg(b/(COM_RATE_VOL))
             .arg(a==0?"---":QString::number(c,'f',3));
     if(ret) str += tr("正常");
     else str += tr("错误");
+
+    QString str1 = "精度检查";
+    QString str2 = "电压精度";
+    QString str3 = tr("与参考源进行对比，允许误差范围在 %1%以内").arg(mItem->err.volErr / 10.0);
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    QString str4 = tr("Voltage L%1: expected voltage=%2V, measured voltage=%3V, error=%4% ").arg(i+1)
+            .arg(a/COM_RATE_VOL)
+                      .arg(b/(COM_RATE_VOL))
+                      .arg(a==0?"---":QString::number(c,'f',3));
+    if(ret) str4 += tr("normal");
+    else str4 += tr("error");
+
+    str1 = "Accuracy inspection";
+    str2 = "Current accuracy";
+    str3 = tr("Compared with the reference source, the allowable error range is within %1%").arg(mItem->err.volErr / 10.0);
+    mPacket->writeData_L(str1, str2, str3, str4, ret);
 
     return mLogs->updatePro(str, ret);
 }
@@ -100,9 +117,32 @@ bool Test_CoreThread::curErrRange(int i)
         if(mBusData->box[mItem->addr - 1].data.cur.value[i]) {
             str += tr("错误");
         } else {
-            str = tr("电流 L%1，错误，请接上负载，实测电流=0A").arg(i+1);
+            str = tr("电流 L%1：错误，请接上负载，实测电流=0A").arg(i+1);
         }
     }
+
+    QString str1 = "精度检查";
+    QString str2 = "电流精度";
+    QString str3 = tr("与参考源进行对比，允许误差范围在 %1%以内").arg(mItem->err.curErr  / 10.0);
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    QString str4 = tr("Current L%1: expected current=%2A, measured current=%3A, error=%4% ").arg(i+1)
+            .arg(a/COM_RATE_CUR).arg(b/COM_RATE_CUR)
+                      .arg(a==0?"---":QString::number(c,'f',3));
+    if(ret) str4 += tr("normal");
+    else {
+        if(mBusData->box[mItem->addr - 1].data.cur.value[i]) {
+            str4 += tr("error");
+        } else {
+            str4 = tr("Current L%1, incorrect, please connect the load, measured current=0A").arg(i+1);
+        }
+    }
+
+    str1 = "Accuracy inspection";
+    str2 = "Current accuracy";
+    str3 = tr("Compared with the reference source, the allowable error range is within %1%").arg(mItem->err.curErr  / 10.0);
+    mPacket->writeData_L(str1, str2, str3, str4, ret);
+
 
     return mLogs->updatePro(str, ret);
 }
@@ -150,7 +190,7 @@ bool Test_CoreThread::eleErrRange2(int i)
 
 bool Test_CoreThread::eleErrRange0(int i)
 {
-    QString str = tr("电能 L%1，实测电能=%2Kwh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
+    QString str = tr("电能 L%1：实测电能=%2Kwh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
     bool ret = false;
     if(0 != mBusData->box[mItem->addr-1].data.ele[i]) {
         str += tr("错误");
@@ -159,6 +199,23 @@ bool Test_CoreThread::eleErrRange0(int i)
         str += tr("正常");
         ret = true;
     }
+
+    QString str1 = "精度检查";
+    QString str2 = "电能清除";
+    QString str3 = "电能为0";
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    QString str4 = tr("Electric energy L%1: measured electric energy= %2Kwh ").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
+    if(ret) {
+        str4 += tr("normal");
+    } else {
+        str4 += tr("error");
+    }
+
+    str1 = "Accuracy inspection";
+    str2 = "Electric energy clearing";
+    str3 = "Electricity is 0";
+    mPacket->writeData_L(str1, str2, str3, str4, ret);
 
     return mLogs->updatePro(str, ret);
 }
@@ -176,11 +233,28 @@ bool Test_CoreThread::powErrRange(int i)
     float c = -1;
     if(mItem->modeId == START_BUSBAR) a*=15;
     if(a != 0)c = ((abs(a-b)*1.0)/a)*100.0;
-    QString str = tr("功率 L%1，期望功率=%2kW，实测功率=%3kW，误差=%4 %").arg(i+1)
+    QString str = tr("功率 L%1：期望功率=%2kW，实测功率=%3kW，误差=%4 % ").arg(i+1)
             .arg(a/COM_RATE_POW).arg(b/COM_RATE_POW)
             .arg(a==0?"---":QString::number(c,'f',3));
     if(ret) str += tr("正常");
     else str += tr("错误");
+
+    QString str1 = "精度检查";
+    QString str2 = "功率精度";
+    QString str3 = tr("与参考源进行对比，允许误差范围在 %1%以内").arg(mItem->err.powErr  / 10.0);
+
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    QString str4 = tr("Power L%1: expected power= %2kW, measured power= %3kW, error= %4% ").arg(i+1)
+            .arg(a/COM_RATE_POW).arg(b/COM_RATE_POW)
+                      .arg(a==0?"---":QString::number(c,'f',3));
+    if(ret) str4 += tr("normal");
+    else str4 += tr("error");
+
+    str1 = "Accuracy inspection";
+    str2 = "Power accuracy";
+    str3 = tr("Compared with the reference source, the allowable error range is within %1%").arg(mItem->err.powErr  / 10.0);
+    mPacket->writeData_L(str1, str2, str3, str4, ret);
 
     return mLogs->updatePro(str, ret);
 }
@@ -208,14 +282,19 @@ bool Test_CoreThread::envErrRange()
 bool Test_CoreThread::checkErrRange()
 {
     int i = 0;
-    bool res = true, ret = true;
+    bool res = true;
+    bool ret = true;
     for(; i<mBusData->box[mItem->addr-1].loopNum; ++i) {
         //        ret = volErrRange(i); if(!ret) res = false;
-        ret = curErrRange(i); if(!ret) res = false;
-        ret = eleErrRange(i); if(!ret) res = false;
-        if(ret){ret = powErrRange(i); if(!ret) res = false;}
+        ret = curErrRange(i); if(!ret) {res = false; }
+        ret = eleErrRange(i); if(!ret) {res = false;}
+        if(ret){ret = powErrRange(i); if(!ret) {res = false;}
+
+        }
     }
     if(res) res = envErrRange();
+
+
 
     return res;
 }
@@ -237,6 +316,7 @@ bool Test_CoreThread::volAlarmErr(int i)
     bool ret = mErr->volAlarm(i);
     if(ret) str += tr("正常");
     else str += tr("错误");
+
 
     return mLogs->updatePro(str, ret);
 }
@@ -428,7 +508,7 @@ void Test_CoreThread::clearStartEleSlot()
 bool Test_CoreThread::printer()
 {
     QString method = "Integration/Busbar-Module/Execute";
-    QString ip = "127.0.0.1";
+    QString ip = "192.168.1.117";
     bool ret = true;
     QString str = tr("标签打印 "); QString str1;
         if(mPro->result != Test_Fail){
@@ -475,10 +555,7 @@ bool Test_CoreThread::printer()
 
 void Test_CoreThread::workResult(bool)
 {
-    mLogs->saveLogs();
     mLogs->updatePro(tr("测试结束"));
-    // sleep(2);
-    // Json_Pack::bulid()->http_post("testdata/add","192.168.1.12");//全流程才发送记录(http)
 
     bool res = false;
     QString str = tr("最终结果 ");
@@ -495,6 +572,7 @@ void Test_CoreThread::workResult(bool)
         str += tr("失败");
         mPro->uploadPassResult = 0;
     }
+    mLogs->saveLogs();
 
     mPacket->updatePro(str, res);
     mPro->step = Test_Over;
@@ -519,6 +597,20 @@ bool Test_CoreThread::checkVersion()
     QString expectVer = QString::number(expect/100)+"."+QString::number(expect/10%10)+"."+QString::number(expect%10);
     str = tr("版本信息实际值：%1 , 期待值：%2！").arg(curVer).arg(expectVer);
     mLogs->updatePro(str,ret);
+
+    QString str1 = "参数检查";
+    QString str2 = "软件版本";
+    QString str3 = "与规格书一致";
+
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    str = tr("Version information actual value:%1 , Expected value:%2！").arg(curVer).arg(expectVer);
+    str1 = "Parameter check";
+    str2 = "Software version";
+    str3 = "Consistent with the specifications";
+    mPacket->writeData_L(str1, str2, str3, str, ret);
+
+
     return ret;
 }
 bool Test_CoreThread::checkEnvVersion()
@@ -534,6 +626,19 @@ bool Test_CoreThread::checkEnvVersion()
     QString expectVer = QString::number(expect/100)+"."+QString::number(expect/10%10)+"."+QString::number(expect%10);
     str = tr("版本信息实际值：%1 , 期待值：%2！").arg(curVer).arg(expectVer);
               mLogs->updatePro(str,ret);
+
+    QString str1 = "参数检查";
+    QString str2 = "软件版本";
+    QString str3 = "与规格书一致";
+
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    str = tr("Version information actual value:%1 , Expected value:%2！").arg(curVer).arg(expectVer);
+    str1 = "Parameter check";
+    str2 = "Software version";
+    str3 = "Consistent with the specifications";
+    mPacket->writeData_L(str1, str2, str3, str, ret);
+
     return ret;
 }
 void Test_CoreThread::workDown()

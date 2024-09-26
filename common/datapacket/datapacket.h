@@ -563,29 +563,36 @@ struct sProgress
 
     uchar result;    // 最终结果
     QTime startTime;
-    QString softwareType;
-    QString companyName;
-    QString protocolVersion;
-
-    QString productType;
-    QString productSN;
     QString macAddress;
     QString gnd;
     QString ir;
     QString dcw;
     QString acw;
-    QString pn;
-    QString on;
+
     // uchar softwareVersion;
-    QString softwareVersion;
-    QString clientName;
-    QString testTime;
+
     QString testStartTime;
     QString testEndTime;
     QStringList no, itemName;
     QList<bool> uploadPass;
     uchar uploadPassResult;
-    QString goods_SN;
+
+    bool online;
+    QString Service;
+    QString module_type;
+    QString module_sn;
+    QString product_sn;
+    QString order_id;
+    uchar language;
+    uchar type;
+    QString softwareVersion;
+    QString testTime;
+    QString test_step;
+    QString test_item;
+    QString test_require;
+    QString test_result;
+    uchar judge_result;
+
 };
 
 
@@ -607,6 +614,8 @@ public:
     void share_mem_free();
     void share_mem_del();
     bool updatePro(const QString &str, bool pass=true, int sec=1);
+    bool writeData(const QString &str1, const QString &str2,const QString &str3, const QString &str4, bool pass, int sec=1);
+    bool writeData_L(const QString &str1, const QString &str2,const QString &str3, const QString &str4, bool pass, int sec=1);
     bool delay(int s=1);
 
 protected:
