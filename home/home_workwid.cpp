@@ -45,7 +45,7 @@ void Home_WorkWid::createWid()
     mItem->online = false;
 
     ui->on_pnEdit->setText(mItem->pn);
-    ui->hwEdit->setText(mItem->hw_ver);
+    // ui->hwEdit->setText(mItem->hw_ver);==================
     ui->readBtn->setHidden(true);
     mItem->addr = Cfg::bulid()->initAddr();
     Cfg::bulid()->initPrint();
@@ -227,6 +227,7 @@ void Home_WorkWid::updateWid()
     mItem->pn = mPn;
     mItem->user = mPro->order_id;
     ui->userLab->setText(mItem->user);
+
     mItem->hw_ver = ui->hwEdit->text();
 
     mPro->online = mItem->online;

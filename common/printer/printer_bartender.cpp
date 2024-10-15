@@ -50,7 +50,7 @@ QString Printer_BarTender::http_post(const QString &method, const QString &ip, s
 
 QString Printer_BarTender::createOrder(sBarTend &it)
 {
-    QString web = "http://172.16.21.120:88/report?";
+    // QString web = "http://172.16.21.120:88/report?";====
     QString str = "ON,PN,SN,FW,HW,Date,QR\n";
     str += it.on + ","; str += it.pn + ","; str += it.sn + ",";
     str += it.fw + ","; str += it.hw + ",";
@@ -58,7 +58,8 @@ QString Printer_BarTender::createOrder(sBarTend &it)
     QDateTime dateTime;
     QString dateTime_str = dateTime.currentDateTime().toString("yyyy/MM/dd hh:mm");
     str += dateTime_str + ",";
-    web += QString("productSN=%1&orderId=%2&moduleSN=%3").arg(it.on).arg(it.pn).arg(it.sn);
+    // web += QString("productSN=%1&orderId=%2&moduleSN=%3").arg(it.on).arg(it.pn).arg(it.sn);=====
+    QString web = it.on+it.pn+it.sn;
     str += web;
 
     return str;

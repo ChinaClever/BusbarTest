@@ -740,6 +740,9 @@
       </item>
       <item row="4" column="1">
        <widget class="QLineEdit" name="hwEdit">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -751,6 +754,9 @@
           <width>120</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="text">
+         <string>1.0</string>
         </property>
        </widget>
       </item>
