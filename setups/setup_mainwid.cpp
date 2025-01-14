@@ -154,8 +154,8 @@ void Setup_MainWid::checkPcNum()
 void Setup_MainWid::checkAddr()
 {
     QString str = ui->addrEdit->text();
-    if(str.isEmpty() || !str.contains("192.168."))
-        MsgBox::warning(this, tr("请设置正确格式的服务端IP!"));
+    if(str.isEmpty())
+        MsgBox::warning(this, tr("请设置服务端IP!"));
 }
 
 void Setup_MainWid::checkPcNumSlot()
