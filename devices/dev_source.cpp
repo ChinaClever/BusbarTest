@@ -10,6 +10,7 @@ Dev_Source::Dev_Source(QObject *parent) : Dev_SiRtu(parent)
     mRk = new Rk_Serial(this);
     mDev = sDataPacket::bulid()->getDev(0);
     init();
+    QTimer::singleShot(850,this,SLOT(initFunSlot()));
 }
 
 Dev_Source *Dev_Source::bulid(QObject *parent)
