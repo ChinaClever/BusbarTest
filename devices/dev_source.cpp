@@ -10,6 +10,7 @@ Dev_Source::Dev_Source(QObject *parent) : Dev_SiRtu(parent)
     mRk = new Rk_Serial(this);
     mDev = sDataPacket::bulid()->getDev(0);
     init();
+    QTimer::singleShot(850,this,SLOT(initFunSlot()));
 }
 
 Dev_Source *Dev_Source::bulid(QObject *parent)
@@ -37,7 +38,7 @@ bool Dev_Source::readRk9901()
 {
     sRkItem rkIt;
 #if TEST1_TEST2
-    mItem->coms.source->setBaudRate(9600);
+    mItem->coms.source->setBaudRate(4800);
     bool ret = mRk->readPacket(rkIt);
 
     if(ret) {
