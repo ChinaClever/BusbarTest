@@ -62,7 +62,7 @@ bool Dev_Source::readRk9901()
         mPacket->updatePro(str, ret);
     }
 #else
-    mItem->coms.source->setBaudRate(9600);
+    mItem->coms.source->setBaudRate(4800);
     bool ret = mRk->readPacket1(rkIt);
 
     if(ret) {
