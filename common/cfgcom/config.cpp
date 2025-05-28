@@ -99,6 +99,7 @@ void Cfg::initCfgDev()
     item->si.si_buzzer = read("si_buzzer", 0, g).toInt();
     item->si.si_filter = read("si_filter", 5, g).toInt();
     item->si.si_version = read("si_version", 100, g).toInt();
+    item->si.loopNum = read("si_loopNum", 0, g).toInt();
     item->si.si_phaseflag = read("si_phaseflag", 0, g).toInt();
     initSiData(g);
 
@@ -159,6 +160,7 @@ void Cfg::writeCfgDev()
         write("si_iOF", item->si.si_iOF, g);
         write("si_version", item->si.si_version, g);
         write("si_phaseflag", item->si.si_phaseflag, g);
+        write("si_loopNum", item->si.loopNum, g);
         writeSiData(g);
     }else if(item->modeId == TEMPER_BUSBAR){
         QString g = "BusbarEnvCfg";

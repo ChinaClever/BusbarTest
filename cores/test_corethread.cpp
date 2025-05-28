@@ -151,7 +151,7 @@ bool Test_CoreThread::curErrRange(int i)
 bool Test_CoreThread::eleErrRange(int i)
 {
     bool ret = mItem->eleCheck;
-    QString str = tr("电能 L%1，实测电能=%2Kwh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
+    QString str = tr("电能 L%1，实测电能=%2kWh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
     if(ret) {
         if(1 != mBusData->box[mItem->addr-1].data.ele[i]) {
             str += tr("错误");
@@ -171,7 +171,7 @@ bool Test_CoreThread::eleErrRange(int i)
 bool Test_CoreThread::eleErrRange2(int i)
 {
     bool ret = mItem->eleCheck;
-    QString str = tr("电能 L%1，实测电能=%2Kwh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
+    QString str = tr("电能 L%1，实测电能=%2kWh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
     if(ret) {
         if(2 != mBusData->box[mItem->addr-1].data.ele[i]) {
             str += tr("错误");
@@ -190,7 +190,7 @@ bool Test_CoreThread::eleErrRange2(int i)
 
 bool Test_CoreThread::eleErrRange0(int i)
 {
-    QString str = tr("电能 L%1：实测电能=%2Kwh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
+    QString str = tr("电能 L%1：实测电能=%2kWh").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
     bool ret = false;
     if(0 != mBusData->box[mItem->addr-1].data.ele[i]) {
         str += tr("错误");
@@ -205,7 +205,7 @@ bool Test_CoreThread::eleErrRange0(int i)
     QString str3 = "电能为0";
     mPacket->writeData(str1, str2, str3, str, ret);
 
-    QString str4 = tr("Electric energy L%1: measured electric energy= %2Kwh ").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
+    QString str4 = tr("Electric energy L%1: measured electric energy= %2kWh ").arg(i+1).arg(mBusData->box[mItem->addr-1].data.ele[i]/COM_RATE_ELE);
     if(ret) {
         str4 += tr("normal");
     } else {
