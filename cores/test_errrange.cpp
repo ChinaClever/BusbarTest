@@ -490,18 +490,29 @@ void Test_ErrRange::compareInsertInfo()
     str = tr("插接箱输出类型实际值：%1 , 期待值：%2！").arg(curValue?tr("三相"):tr("单相")).arg(expect?tr("三相"):tr("单相"));
     mLogs->updatePro(str,ret);
 
-    curValue = b->loopNum;
-    expect = mItem->si.loopNum;
-    if(curValue == expect) ret = true;
-    str = tr("插接箱回路数实际值：%1 , 期待值：%2！").arg(curValue).arg(expect);
-    mLogs->updatePro(str,ret);
-
     str2 = "输出类型检查";
     str3 = "与规格书一致";
     mPacket->writeData(str1, str2, str3, str, ret);
 
     str = tr("Plug in box single-phase or three-phase actual value:%1 , Expected value:%2！").arg(curValue?tr("three-phase"):tr("single phase")).arg(expect?tr("three-phase"):tr("single phase"));
     str5 = "Output type check";
+    str6 = "Consistent with the specifications";
+    mPacket->writeData_L(str4, str5, str6, str, ret);
+    ret = false;
+
+
+    curValue = b->loopNum;
+    expect = mItem->si.loopNum;
+    if(curValue == expect) ret = true;
+    str = tr("插接箱回路数实际值：%1 , 期待值：%2！").arg(curValue).arg(expect);
+    mLogs->updatePro(str,ret);
+
+    str2 = "回路数检查";
+    str3 = "与规格书一致";
+    mPacket->writeData(str1, str2, str3, str, ret);
+
+    str = tr("Plug in box loop num actual value:%1 , Expected value:%2！").arg(curValue).arg(expect);
+    str5 = "Loop num check";
     str6 = "Consistent with the specifications";
     mPacket->writeData_L(str4, str5, str6, str, ret);
     ret = false;
