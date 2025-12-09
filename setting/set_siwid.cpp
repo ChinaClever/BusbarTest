@@ -37,6 +37,8 @@ void Set_SiWid::initType()
     ui->buzzerBox->setCurrentIndex(dt->si_buzzer);
     ui->filterspinBox->setValue(dt->si_filter);
     ui->iOFBox->setCurrentIndex(dt->si_iOF);
+    ui->curSpecBox->setCurrentIndex(dt->si_cur_spec);
+
     int ver = dt->si_version;
     QString str = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
     ui->verlineEdit->setText(str);
@@ -57,6 +59,7 @@ void Set_SiWid::updateType()
     dt->si_iOF = ui->iOFBox->currentIndex();
     dt->si_version = ui->verlineEdit->text().remove(".").toUInt();
     dt->si_phaseflag = ui->phaseBox->currentIndex();
+    dt->si_cur_spec = ui->curSpecBox->currentIndex();
     uchar loop = ui->loopNumBox->currentIndex();
     if(loop == 0) dt->loopNum = 3;
     else if(loop == 1) dt->loopNum = 6;
