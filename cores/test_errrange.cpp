@@ -246,6 +246,18 @@ void Test_ErrRange::compareInsertInfo()
     str = tr("插接箱波特率实际值：%1 , 期待值：%2！").arg(changeBaudType(curValue)).arg(changeBaudType(expect));
     mLogs->updatePro(str,ret);ret = false;
 
+    curValue = b->plug_cur_spec;
+    expect = mItem->si.si_cur_spec;
+    if(curValue == expect) ret = true;
+    str = tr("插接箱电流规格实际值：%1 , 期待值：%2").arg(curValue?tr("125A(65A以上)"):tr("63A以下")).arg(expect?tr("125A(65A以上)"):tr("63A以下"));
+    mLogs->updatePro(str,ret);ret = false;
+
+    curValue = b->backup_breaker;
+    expect = 0;
+    if(curValue == expect) ret = true;
+    str = tr("插接箱备用断路器状态实际值：%1 , 期待值：%2").arg(curValue?tr("开启"):tr("不开启")).arg(expect?tr("开启"):tr("不开启"));
+    mLogs->updatePro(str,ret);ret = false;
+
     curValue = b->buzzerStatus;
     expect = mItem->si.si_buzzer;
     if(curValue == expect) ret = true;
