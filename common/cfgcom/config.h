@@ -116,6 +116,7 @@ struct sSiCfg {
     uchar si_buzzer;
     uchar si_filter;
     uchar si_iOF;
+    uchar si_trip;
     uchar loopNum;
     uchar si_cur_spec;
     ushort si_version;

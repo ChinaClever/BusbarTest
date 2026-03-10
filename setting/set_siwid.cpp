@@ -38,6 +38,7 @@ void Set_SiWid::initType()
     ui->filterspinBox->setValue(dt->si_filter);
     ui->iOFBox->setCurrentIndex(dt->si_iOF);
     ui->curSpecBox->setCurrentIndex(dt->si_cur_spec);
+    ui->tripBox->setCurrentIndex(dt->si_trip);
 
     int ver = dt->si_version;
     QString str = QString::number(ver/100)+"."+QString::number(ver/10%10)+"."+QString::number(ver%10);
@@ -60,6 +61,7 @@ void Set_SiWid::updateType()
     dt->si_version = ui->verlineEdit->text().remove(".").toUInt();
     dt->si_phaseflag = ui->phaseBox->currentIndex();
     dt->si_cur_spec = ui->curSpecBox->currentIndex();
+    dt->si_trip = ui->tripBox->currentIndex();
     uchar loop = ui->loopNumBox->currentIndex();
     if(loop == 0) dt->loopNum = 3;
     else if(loop == 1) dt->loopNum = 6;
