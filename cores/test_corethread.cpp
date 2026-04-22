@@ -286,11 +286,21 @@ bool Test_CoreThread::hzAlarmErr()
     return res;
 }
 
-bool Test_CoreThread::totalPowAlarmErr()
+bool Test_CoreThread::totalPowAlarmErr(int mode)
 {
     bool res = true;
     QString str = tr("总功率报警阈值 ");
-    bool ret = mErr->totalPowAlarm();
+    bool ret = mErr->totalPowAlarm(mode);
+    if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
+    mLogs->updatePro(str, ret);
+    return res;
+}
+
+bool Test_CoreThread::outputPowAlarmErr(int index)
+{
+    bool res = true;
+    QString str = tr("output%1功率报警阈值 ").arg(index+1);
+    bool ret = mErr->outputPowAlarm(index);
     if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
     mLogs->updatePro(str, ret);
     return res;
@@ -342,13 +352,17 @@ bool Test_CoreThread::checkAlarmErr()
 #if ZHIJIANGINSERTBOXZERO==1
     if(ret) res = zeroLineCurAlarmErr(); if(!ret) res = false;//////////////////////////////////
 #endif
+    ret = totalPowAlarmErr(mItem->modeId); if(!ret) res = false;
     if(mItem->modeId == START_BUSBAR){
         ret = hzAlarmErr(); if(!ret) res = false;
-        ret = totalPowAlarmErr(); if(!ret) res = false;
         #if ZHIJIANGINSERTBOXZERO==0
         ret = zeroLineCurAlarmErr(); if(!ret) res = false;////////////////////////////////////
         #endif
         residualAlarmErr(); if(!ret) res = false;
+    }else if(mItem->modeId == INSERT_BUSBAR){
+        for(int i = 0 ; i < START_LINE_NUM ; i++){
+            ret = outputPowAlarmErr(i); if(!ret) res = false;
+        }
     }
 
     return res;

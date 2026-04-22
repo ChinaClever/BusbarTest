@@ -73,6 +73,7 @@ struct sObjCfg
     sUnitCfg linevol; // 线电压
     sUnitCfg hz; // 频率
     sUnitCfg totalpow;
+    sUnitCfg outputpow;
     sUnitCfg zerocur; // 零线电流
     sUnitCfg recur; // 剩余电流
 };

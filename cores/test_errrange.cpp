@@ -190,13 +190,27 @@ bool Test_ErrRange::hzAlarm()
     return ret;
 }
 
-bool Test_ErrRange::totalPowAlarm()
+bool Test_ErrRange::totalPowAlarm(int mode)
 {
     bool ret = true;
     sObjCfg *cth = &(mItem->ip_cfg);
+    if(mode == 1) cth = &(mItem->si_cfg);
     sRtuULLintUnit *unit = &(mBusData->box[mItem->addr - 1].totalPow);
     uint min = cth->totalpow.min*cth->totalpow.rate;
     uint max = cth->totalpow.max*cth->totalpow.rate;
+    if(unit->imin != min) ret = false;
+    if(unit->imax != max) ret = false;
+
+    return ret;
+}
+
+bool Test_ErrRange::outputPowAlarm(int index)
+{
+    bool ret = true;
+    sObjCfg *cth = &(mItem->si_cfg);
+    sRtuULLintUnit *unit = &(mBusData->box[mItem->addr - 1].outputXBox.outputXPow[index]);
+    uint min = cth->outputpow.min*cth->outputpow.rate;
+    uint max = cth->outputpow.max*cth->outputpow.rate;
     if(unit->imin != min) ret = false;
     if(unit->imax != max) ret = false;
 

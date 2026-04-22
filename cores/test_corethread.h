@@ -44,7 +44,7 @@ protected:
     bool checkAlarmErr();
     bool envAlarmErr();
     bool hzAlarmErr();
-    bool totalPowAlarmErr();
+    bool totalPowAlarmErr(int mode);
     bool zeroLineCurAlarmErr();
     bool residualAlarmErr();
 
@@ -59,6 +59,7 @@ protected:
     bool checkVersion();
     bool checkEnvVersion();
     bool checkVolErrRange();
+    bool outputPowAlarmErr(int index);
 
 private:
     Test_Logs *mLogs;

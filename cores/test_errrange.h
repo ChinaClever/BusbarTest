@@ -24,7 +24,8 @@ public:
 
     bool lineVolAlarm(int id);
     bool hzAlarm();
-    bool totalPowAlarm();
+    bool totalPowAlarm(int mode);
+    bool outputPowAlarm(int index);
     bool zeroLineCurAlarm();
     bool residualAlarm();
 
