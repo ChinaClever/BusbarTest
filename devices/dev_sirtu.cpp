@@ -241,6 +241,8 @@ void Dev_SiRtu::outputAndTotalInitData(sBoxData *box, Rtu_recv *pkt)
         box->outputXBox.outputXEle[i] = pkt->outputXEle[i];
         box->outputXBox.outputXApPow[i].ivalue = pkt->outputXApPow[i].ivalue;
     }
+    box->totalPow.ivalue = pkt->totalPow.ivalue;
+    box->totalPow.imax = pkt->totalPow.imax;
     box->totalEle = pkt->totalEle;
 }
 
@@ -693,9 +695,9 @@ bool Dev_SiRtu::rtu_recv_packetV3(uchar *buf, int len, Rtu_recv *pkt)
                 ptr += rtu_plug_recv_loop_alarm_data(ptr , pkt , i);
             //pkt->plugBreaker = (*ptr) * 256 + *(ptr+1);
             ptr+=2;
+            for(int i = 0 ; i < RTU_LOOP_NUM ; ++i) // 读取loop load数据
+                ptr += 2;
             if(pkt->plug_cur_spec == 1){
-                for(int i = 0 ; i < RTU_LOOP_NUM ; ++i) // 读取loop load数据
-                    ptr += 2;
                 for(int i = 0 ; i < RTU_LOOP_NUM ; ++i) // 读取loop high current数据
                     ptr += rtu_plug_recv_loop_high_cur_data(ptr , pkt , i);
                 for(int i = 0 ; i < RTU_LOOP_NUM ; ++i) // 读取loop high alram数据
