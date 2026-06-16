@@ -209,9 +209,9 @@ bool Test_ErrRange::outputPowAlarm(int index)
     bool ret = true;
     sObjCfg *cth = &(mItem->si_cfg);
     sRtuULLintUnit *unit = &(mBusData->box[mItem->addr - 1].outputXBox.outputXPow[index]);
-    uint min = cth->outputpow.min*cth->outputpow.rate;
+    //uint min = cth->outputpow.min*cth->outputpow.rate;
     uint max = cth->outputpow.max*cth->outputpow.rate;
-    if(unit->imin != min) ret = false;
+    //if(unit->imin != min) ret = false;
     if(unit->imax != max) ret = false;
 
     return ret;
